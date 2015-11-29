@@ -7,6 +7,15 @@ public class SmsData extends BaseData {
     private String mSender;
     private String mMessage;
     private int mBlockedStatus;
+    private long mReceivedTimestamp;
+
+    public long getReceivedTimestamp() {
+        return mReceivedTimestamp;
+    }
+
+    public void setReceivedTimestamp(long receivedTimestamp) {
+        this.mReceivedTimestamp = receivedTimestamp;
+    }
 
     public int getBlockedStatus() {
         return mBlockedStatus;
