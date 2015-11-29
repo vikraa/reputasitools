@@ -2,17 +2,18 @@ package com.labs.tools.database.table;
 
 import android.database.sqlite.SQLiteDatabase;
 
-import com.labs.tools.database.data.SmsData;
+import com.labs.tools.database.data.CallData;
 
 import java.util.List;
 
 /**
  * Created by vikraa on 11/29/2015.
  */
-public class TableSms extends BaseTable<SmsData> {
+public class TableCall extends BaseTable<CallData> {
 
-    public static final int SMS_STATUS_BLOCKED = 1;
-    public static final int SMS_STATUS_ALLOWED = 0;
+    public static final int CALL_TYPE_ANSWERED = 0;
+    public static final int CALL_TYPE_REJECTED = 1;
+    public static final int CALL_TYPE_MISSED = 2;
 
     @Override
     public void onCreateTable(SQLiteDatabase db) {
@@ -35,27 +36,27 @@ public class TableSms extends BaseTable<SmsData> {
     }
 
     @Override
-    public void insert(SmsData data) {
+    public void insert(CallData data) {
 
     }
 
     @Override
-    public void update(SmsData data) {
+    public void update(CallData data) {
 
     }
 
     @Override
-    public void delete(SmsData data) {
+    public void delete(CallData data) {
 
     }
 
     @Override
-    public void insert(List<SmsData> dataList) {
+    public void insert(List<CallData> dataList) {
 
     }
 
     @Override
-    public List<SmsData> getAll() {
+    public List<CallData> getAll() {
         return null;
     }
 
@@ -65,7 +66,7 @@ public class TableSms extends BaseTable<SmsData> {
     }
 
     @Override
-    public SmsData find(String... keys) {
+    public CallData find(String... keys) {
         return null;
     }
 
