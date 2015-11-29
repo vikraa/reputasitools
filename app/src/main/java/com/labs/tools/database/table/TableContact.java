@@ -1,6 +1,7 @@
 package com.labs.tools.database.table;
 
 import android.content.ContentValues;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.text.format.DateUtils;
 
@@ -9,6 +10,7 @@ import com.labs.tools.database.DataProvider;
 import com.labs.tools.database.data.ContactData;
 import com.labs.tools.util.TimeUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.UUID;
@@ -93,12 +95,30 @@ public class TableContact extends BaseTable<ContactData> {
 
     @Override
     public List<ContactData> getAll() {
-        return null;
+        List<ContactData> queryResult = new ArrayList<>();
+        Cursor qCursor = MyApplication.getContext().getContentResolver().query(DataProvider.CONTACT_URI, null, null, null, null);
+        if (qCursor != null && qCursor.moveToFirst()) {
+            do {
+                ContactData contact = new ContactData();
+                contact.setId(qCursor.getString(qCursor.getColumnIndex(FIELD_ID)));
+                contact.setName(qCursor.getString(qCursor.getColumnIndex(FIELD_CONTACT_NAME)));
+                contact.setNumber(qCursor.getString(qCursor.getColumnIndex(FIELD_CONTACT_NUMBER)));
+                contact.setEmail(qCursor.getString(qCursor.getColumnIndex(FIELD_CONTACT_EMAIL)));
+                contact.setLastUpdated(qCursor.getLong(qCursor.getColumnIndex(FIELD_LAST_UPDATED_TIMESTAMP)));
+                queryResult.add(contact);
+            } while(qCursor.moveToNext());
+        }
+        return queryResult;
     }
 
     @Override
     public int getCount() {
-        return 0;
+        Cursor qCursor = MyApplication.getContext().getContentResolver().query(DataProvider.CONTACT_URI, null, null, null, null);
+        int counter = 0;
+        if (qCursor.moveToFirst()) {
+            counter = qCursor.getCount();
+        }
+        return counter;
     }
 
     @Override

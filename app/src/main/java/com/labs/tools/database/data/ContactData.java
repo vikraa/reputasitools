@@ -3,7 +3,7 @@ package com.labs.tools.database.data;
 /**
  * Created by Vikraa on 11/26/2015.
  */
-public class ContactData {
+public class ContactData extends BaseData {
     private String mId;
     private String mName;
     private String mNumber;
