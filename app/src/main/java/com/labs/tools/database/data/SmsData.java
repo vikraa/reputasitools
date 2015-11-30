@@ -4,6 +4,7 @@ package com.labs.tools.database.data;
  * Created by vikraa on 11/29/2015.
  */
 public class SmsData extends BaseData {
+
     private String mSender;
     private String mMessage;
     private int mBlockedStatus;

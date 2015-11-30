@@ -21,7 +21,6 @@ import java.util.UUID;
 public class TableContact extends BaseTable<ContactData> {
 
     public static final String TABLE_NAME = "contact";
-    private final String FIELD_ID = "id";
     private final String FIELD_CONTACT_NAME = "name";
     private final String FIELD_CONTACT_NUMBER = "number";
     private final String FIELD_CONTACT_EMAIL = "email";

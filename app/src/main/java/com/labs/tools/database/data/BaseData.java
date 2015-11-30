@@ -3,8 +3,17 @@ package com.labs.tools.database.data;
 /**
  * Created by vikraa on 11/29/2015.
  */
-public class BaseData {
+public abstract class BaseData {
     private long mLastUpdated;
+    private String mId;
+
+    public String getId() {
+        return mId;
+    }
+
+    public void setId(String id) {
+        this.mId = id;
+    }
 
     public long getLastUpdated() {
         return mLastUpdated;

@@ -7,7 +7,9 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 
+import com.labs.tools.database.table.TableCall;
 import com.labs.tools.database.table.TableContact;
+import com.labs.tools.database.table.TableSms;
 
 /**
  * Created by Vikraa on 11/26/2015.
@@ -21,6 +23,8 @@ public class DataProvider extends ContentProvider {
     private static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY);
 
     public static final Uri CONTACT_URI = Uri.withAppendedPath(CONTENT_URI, BASE_PATH + TableContact.TABLE_NAME);
+    public static final Uri CALL_URI = Uri.withAppendedPath(CONTENT_URI, BASE_PATH + TableCall.TABLE_NAME);
+    public static final Uri SMS_URI = Uri.withAppendedPath(CONTENT_URI, BASE_PATH + TableSms.TABLE_NAME);
 
     private static final UriMatcher URI_MATCHER = new UriMatcher(UriMatcher.NO_MATCH);
 

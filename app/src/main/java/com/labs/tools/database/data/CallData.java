@@ -4,7 +4,6 @@ package com.labs.tools.database.data;
  * Created by vikraa on 11/29/2015.
  */
 public class CallData extends BaseData {
-
     private String mFromName;
     private String mNumber;
     private long mCallTimestamp;
@@ -38,7 +37,7 @@ public class CallData extends BaseData {
         return mCallType;
     }
 
-    public void setCallType(int mCallType) {
-        this.mCallType = mCallType;
+    public void setCallType(int callType) {
+        this.mCallType = callType;
     }
 }

@@ -4,18 +4,9 @@ package com.labs.tools.database.data;
  * Created by Vikraa on 11/26/2015.
  */
 public class ContactData extends BaseData {
-    private String mId;
     private String mName;
     private String mNumber;
     private String mEmail;
-
-    public String getId() {
-        return mId;
-    }
-
-    public void setId(String id) {
-        this.mId = id;
-    }
 
     public String getName() {
         return mName;

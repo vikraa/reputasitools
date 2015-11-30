@@ -8,6 +8,7 @@ import java.util.List;
  * Created by Vikraa on 11/26/2015.
  */
 public abstract class BaseTable<T> {
+    protected String FIELD_ID = "rowid";
     protected String FIELD_LAST_UPDATED_TIMESTAMP = "lastupdated";
     protected String SQL_DROP_TABLE = "drop table ";
     protected String SQL_DELETE_ALL_CONTENTS = "delete from ";

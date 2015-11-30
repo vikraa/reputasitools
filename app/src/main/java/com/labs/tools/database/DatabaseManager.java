@@ -5,7 +5,9 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import com.labs.tools.database.table.BaseTable;
+import com.labs.tools.database.table.TableCall;
 import com.labs.tools.database.table.TableContact;
+import com.labs.tools.database.table.TableSms;
 
 /**
  * Created by Vikraa on 11/26/2015.
@@ -13,7 +15,7 @@ import com.labs.tools.database.table.TableContact;
 public class DatabaseManager extends SQLiteOpenHelper {
 
     private static final BaseTable[] REPUTASI_TABLES = {
-      new TableContact(),
+      new TableContact(), new TableCall(), new TableSms()
     };
 
     public static final String NAME = "reputasi";
