@@ -32,7 +32,8 @@ public class TableContact extends BaseTable<ContactData> {
                 FIELD_CONTACT_NAME + " TEXT NOT NULL," +
                 FIELD_CONTACT_NUMBER + " TEXT," +
                 FIELD_CONTACT_EMAIL + " TEXT," +
-                FIELD_LAST_UPDATED_TIMESTAMP + " BIGINT )";
+                FIELD_LAST_UPDATED_TIMESTAMP + " BIGINT, " +
+                FIELD_SYNCHRONIZED_STATUS + " BIGINT DEFAULT 0 )";
         db.execSQL(SQL_CREATE_TABLE);
     }
 
@@ -54,6 +55,7 @@ public class TableContact extends BaseTable<ContactData> {
         contentValues.put(FIELD_CONTACT_NUMBER, data.getNumber());
         contentValues.put(FIELD_CONTACT_EMAIL, data.getEmail());
         contentValues.put(FIELD_LAST_UPDATED_TIMESTAMP, TimeUtils.getCurrentTimestamp());
+        contentValues.put(FIELD_SYNCHRONIZED_STATUS, data.getSynchronizedStatus());
         MyApplication.getContext().getContentResolver().insert(DataProvider.CONTACT_URI, contentValues);
     }
 
@@ -65,6 +67,7 @@ public class TableContact extends BaseTable<ContactData> {
         contentValues.put(FIELD_CONTACT_NUMBER, data.getNumber());
         contentValues.put(FIELD_CONTACT_EMAIL, data.getEmail());
         contentValues.put(FIELD_LAST_UPDATED_TIMESTAMP, TimeUtils.getCurrentTimestamp());
+        contentValues.put(FIELD_SYNCHRONIZED_STATUS, data.getSynchronizedStatus());
         MyApplication.getContext().getContentResolver().update(DataProvider.CONTACT_URI, contentValues, FIELD_ID + " = ?", new String[]{data.getId()});
     }
 
@@ -85,6 +88,7 @@ public class TableContact extends BaseTable<ContactData> {
                 contentValues.put(FIELD_CONTACT_NUMBER, data.getNumber());
                 contentValues.put(FIELD_CONTACT_EMAIL, data.getEmail());
                 contentValues.put(FIELD_LAST_UPDATED_TIMESTAMP, TimeUtils.getCurrentTimestamp());
+                contentValues.put(FIELD_SYNCHRONIZED_STATUS, data.getSynchronizedStatus());
                 cvList[count] = contentValues;
                 count++;
             }
@@ -104,6 +108,7 @@ public class TableContact extends BaseTable<ContactData> {
                 contact.setNumber(qCursor.getString(qCursor.getColumnIndex(FIELD_CONTACT_NUMBER)));
                 contact.setEmail(qCursor.getString(qCursor.getColumnIndex(FIELD_CONTACT_EMAIL)));
                 contact.setLastUpdated(qCursor.getLong(qCursor.getColumnIndex(FIELD_LAST_UPDATED_TIMESTAMP)));
+                contact.setSynchronizedStatus(qCursor.getInt(qCursor.getColumnIndex(FIELD_SYNCHRONIZED_STATUS)));
                 queryResult.add(contact);
             } while(qCursor.moveToNext());
         }

@@ -34,7 +34,8 @@ public class TableCall extends BaseTable<CallData> {
                 FIELD_CALL_FROM_NAME + " TEXT," +
                 FIELD_CALL_NUMBER + " TEXT," +
                 FIELD_CALL_TYPE + " INTEGER," +
-                FIELD_LAST_UPDATED_TIMESTAMP + " BIGINT )";
+                FIELD_LAST_UPDATED_TIMESTAMP + " BIGINT, " +
+                FIELD_SYNCHRONIZED_STATUS + " BIGINT DEFAULT 0 )";
         db.execSQL(SQL_CREATE_TABLE);
     }
 
@@ -61,17 +62,19 @@ public class TableCall extends BaseTable<CallData> {
         contentValues.put(FIELD_CALL_NUMBER, data.getNumber());
         contentValues.put(FIELD_CALL_TYPE, data.getCallType());
         contentValues.put(FIELD_LAST_UPDATED_TIMESTAMP, TimeUtils.getCurrentTimestamp());
+        contentValues.put(FIELD_SYNCHRONIZED_STATUS, data.getSynchronizedStatus());
         MyApplication.getContext().getContentResolver().insert(DataProvider.CALL_URI, contentValues);
     }
 
     @Override
     public void update(CallData data) {
         ContentValues contentValues = new ContentValues();
-        contentValues.put(FIELD_ID, UUID.randomUUID().toString());
+        contentValues.put(FIELD_ID, data.getId());
         contentValues.put(FIELD_CALL_FROM_NAME, data.getFromName());
         contentValues.put(FIELD_CALL_NUMBER, data.getNumber());
         contentValues.put(FIELD_CALL_TYPE, data.getCallType());
         contentValues.put(FIELD_LAST_UPDATED_TIMESTAMP, TimeUtils.getCurrentTimestamp());
+        contentValues.put(FIELD_SYNCHRONIZED_STATUS, data.getSynchronizedStatus());
         MyApplication.getContext().getContentResolver().update(DataProvider.CALL_URI, contentValues, FIELD_ID + " = ? ", new String[] { data.getId() });
     }
 
@@ -92,6 +95,7 @@ public class TableCall extends BaseTable<CallData> {
                 contentValues.put(FIELD_CALL_NUMBER, data.getNumber());
                 contentValues.put(FIELD_CALL_TYPE, data.getCallType());
                 contentValues.put(FIELD_LAST_UPDATED_TIMESTAMP, TimeUtils.getCurrentTimestamp());
+                contentValues.put(FIELD_SYNCHRONIZED_STATUS, data.getSynchronizedStatus());
                 cvList[count] = contentValues;
                 count++;
             }
@@ -111,6 +115,7 @@ public class TableCall extends BaseTable<CallData> {
                 calldata.setNumber(qCursor.getString(qCursor.getColumnIndex(FIELD_CALL_NUMBER)));
                 calldata.setCallType(qCursor.getInt(qCursor.getColumnIndex(FIELD_CALL_TYPE)));
                 calldata.setLastUpdated(qCursor.getLong(qCursor.getColumnIndex(FIELD_LAST_UPDATED_TIMESTAMP)));
+                calldata.setSynchronizedStatus(qCursor.getInt(qCursor.getColumnIndex(FIELD_SYNCHRONIZED_STATUS)));
                 queryResult.add(calldata);
             } while (qCursor.moveToNext());
         }

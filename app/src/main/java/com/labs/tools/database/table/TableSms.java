@@ -18,10 +18,10 @@ import java.util.UUID;
  */
 public class TableSms extends BaseTable<SmsData> {
     public static final String TABLE_NAME = "messages";
-    private final String FIELD_SMS_SENDER = "";
-    private final String FIELD_SMS_CONTENT = "";
-    private final String FIELD_SMS_BLOCK_STATUS = "";
-    private final String FIELD_SMS_RECEIVED_TIMESTAMP = "";
+    private final String FIELD_SMS_SENDER = "sender";
+    private final String FIELD_SMS_CONTENT = "content";
+    private final String FIELD_SMS_BLOCK_STATUS = "blockedstatus";
+    private final String FIELD_SMS_RECEIVED_TIMESTAMP = "receivedtimestamp";
 
     public static final int SMS_STATUS_BLOCKED = 1;
     public static final int SMS_STATUS_ALLOWED = 0;
@@ -34,7 +34,8 @@ public class TableSms extends BaseTable<SmsData> {
                 FIELD_SMS_CONTENT + " TEXT," +
                 FIELD_SMS_BLOCK_STATUS + " TEXT," +
                 FIELD_SMS_RECEIVED_TIMESTAMP + " BIGINT," +
-                FIELD_LAST_UPDATED_TIMESTAMP + " BIGINT )";
+                FIELD_LAST_UPDATED_TIMESTAMP + " BIGINT, " +
+                FIELD_SYNCHRONIZED_STATUS + " BIGINT DEFAULT 0 )";
         db.execSQL(SQL_CREATE_TABLE);
     }
 
@@ -62,6 +63,7 @@ public class TableSms extends BaseTable<SmsData> {
         contentValues.put(FIELD_SMS_BLOCK_STATUS, data.getBlockedStatus());
         contentValues.put(FIELD_SMS_RECEIVED_TIMESTAMP, data.getReceivedTimestamp());
         contentValues.put(FIELD_LAST_UPDATED_TIMESTAMP, TimeUtils.getCurrentTimestamp());
+        contentValues.put(FIELD_SYNCHRONIZED_STATUS, data.getSynchronizedStatus());
         MyApplication.getContext().getContentResolver().insert(DataProvider.SMS_URI,contentValues);
     }
 
@@ -74,6 +76,7 @@ public class TableSms extends BaseTable<SmsData> {
         contentValues.put(FIELD_SMS_BLOCK_STATUS, data.getBlockedStatus());
         contentValues.put(FIELD_SMS_RECEIVED_TIMESTAMP, data.getReceivedTimestamp());
         contentValues.put(FIELD_LAST_UPDATED_TIMESTAMP, TimeUtils.getCurrentTimestamp());
+        contentValues.put(FIELD_SYNCHRONIZED_STATUS, data.getSynchronizedStatus());
         MyApplication.getContext().getContentResolver().update(DataProvider.SMS_URI, contentValues, FIELD_ID + " = ? ", new String[]{data.getId()});
     }
 
@@ -95,6 +98,7 @@ public class TableSms extends BaseTable<SmsData> {
                 contentValues.put(FIELD_SMS_BLOCK_STATUS, data.getBlockedStatus());
                 contentValues.put(FIELD_SMS_RECEIVED_TIMESTAMP, data.getReceivedTimestamp());
                 contentValues.put(FIELD_LAST_UPDATED_TIMESTAMP, TimeUtils.getCurrentTimestamp());
+                contentValues.put(FIELD_SYNCHRONIZED_STATUS, data.getSynchronizedStatus());
                 cvList[count] = contentValues;
                 count++;
             }
@@ -114,6 +118,7 @@ public class TableSms extends BaseTable<SmsData> {
                 smsdata.setMessage(qCursor.getString(qCursor.getColumnIndex(FIELD_SMS_CONTENT)));
                 smsdata.setBlockedStatus(qCursor.getInt(qCursor.getColumnIndex(FIELD_SMS_BLOCK_STATUS)));
                 smsdata.setLastUpdated(qCursor.getLong(qCursor.getColumnIndex(FIELD_LAST_UPDATED_TIMESTAMP)));
+                smsdata.setSynchronizedStatus(qCursor.getInt(qCursor.getColumnIndex(FIELD_SYNCHRONIZED_STATUS)));
                 queryResult.add(smsdata);
             } while(qCursor.moveToNext());
         }

@@ -6,6 +6,15 @@ package com.labs.tools.database.data;
 public abstract class BaseData {
     private long mLastUpdated;
     private String mId;
+    private int mSynchronizedStatus;
+
+    public int getSynchronizedStatus() {
+        return mSynchronizedStatus;
+    }
+
+    public void setSynchronizedStatus(int synchronizedStaus) {
+        this.mSynchronizedStatus = synchronizedStaus;
+    }
 
     public String getId() {
         return mId;

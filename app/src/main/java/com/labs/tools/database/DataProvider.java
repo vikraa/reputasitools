@@ -9,6 +9,7 @@ import android.net.Uri;
 
 import com.labs.tools.database.table.TableCall;
 import com.labs.tools.database.table.TableContact;
+import com.labs.tools.database.table.TableContribute;
 import com.labs.tools.database.table.TableSms;
 
 /**
@@ -25,6 +26,7 @@ public class DataProvider extends ContentProvider {
     public static final Uri CONTACT_URI = Uri.withAppendedPath(CONTENT_URI, BASE_PATH + TableContact.TABLE_NAME);
     public static final Uri CALL_URI = Uri.withAppendedPath(CONTENT_URI, BASE_PATH + TableCall.TABLE_NAME);
     public static final Uri SMS_URI = Uri.withAppendedPath(CONTENT_URI, BASE_PATH + TableSms.TABLE_NAME);
+    public static final Uri CONTRIBUTE_URI = Uri.withAppendedPath(CONTENT_URI, BASE_PATH + TableContribute.TABLE_NAME);
 
     private static final UriMatcher URI_MATCHER = new UriMatcher(UriMatcher.NO_MATCH);
 
