@@ -7,6 +7,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 
+import com.labs.tools.database.table.TableBlockedNumber;
 import com.labs.tools.database.table.TableCall;
 import com.labs.tools.database.table.TableContact;
 import com.labs.tools.database.table.TableContribute;
@@ -18,6 +19,10 @@ import com.labs.tools.database.table.TableSms;
 public class DataProvider extends ContentProvider {
     private DatabaseManager mDatabaseManager;
     private static final int CONTACT = 100;
+    private static final int CALL = 200;
+    private static final int SMS = 300;
+    private static final int CONTRIBUTE = 400;
+    private static final int BLOCKEDNUMBER = 500;
 
     private static final String AUTHORITY = "com.labs.tools";
     private static final String BASE_PATH = DatabaseManager.NAME + "/";
@@ -27,11 +32,15 @@ public class DataProvider extends ContentProvider {
     public static final Uri CALL_URI = Uri.withAppendedPath(CONTENT_URI, BASE_PATH + TableCall.TABLE_NAME);
     public static final Uri SMS_URI = Uri.withAppendedPath(CONTENT_URI, BASE_PATH + TableSms.TABLE_NAME);
     public static final Uri CONTRIBUTE_URI = Uri.withAppendedPath(CONTENT_URI, BASE_PATH + TableContribute.TABLE_NAME);
+    public static final Uri BLOCKEDNUMBER_URI = Uri.withAppendedPath(CONTACT_URI, BASE_PATH + TableBlockedNumber.TABLE_NAME);
 
     private static final UriMatcher URI_MATCHER = new UriMatcher(UriMatcher.NO_MATCH);
 
     static {
         URI_MATCHER.addURI(AUTHORITY, BASE_PATH + TableContact.TABLE_NAME, CONTACT);
+        URI_MATCHER.addURI(AUTHORITY, BASE_PATH + TableCall.TABLE_NAME, CALL);
+        URI_MATCHER.addURI(AUTHORITY, BASE_PATH + TableSms.TABLE_NAME, SMS);
+        URI_MATCHER.addURI(AUTHORITY, BASE_PATH + TableContribute.TABLE_NAME, BLOCKEDNUMBER);
     }
 
 

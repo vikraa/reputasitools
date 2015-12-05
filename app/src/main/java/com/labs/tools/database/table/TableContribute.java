@@ -111,7 +111,7 @@ public class TableContribute extends BaseTable<ContributeData> {
                 contributedata.setNotes(qCursor.getString(qCursor.getColumnIndex(FIELD_LAST_UPDATED_TIMESTAMP)));
                 contributedata.setSynchronizedStatus(qCursor.getInt(qCursor.getColumnIndex(FIELD_SYNCHRONIZED_STATUS)));
                 queryResult.add(contributedata);
-            } while(qCursor.moveToFirst());
+            } while(qCursor.moveToNext());
         }
         return queryResult;
     }

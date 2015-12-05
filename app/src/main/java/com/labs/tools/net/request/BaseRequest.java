@@ -5,7 +5,8 @@ import com.google.gson.annotations.SerializedName;
 /**
  * Created by Vikraa on 11/20/2015.
  */
-public class BaseRequest {
+public abstract class BaseRequest {
+
     @SerializedName("timestamp")
     private long timestamp;
 

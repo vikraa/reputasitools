@@ -5,8 +5,10 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import com.labs.tools.database.table.BaseTable;
+import com.labs.tools.database.table.TableBlockedNumber;
 import com.labs.tools.database.table.TableCall;
 import com.labs.tools.database.table.TableContact;
+import com.labs.tools.database.table.TableContribute;
 import com.labs.tools.database.table.TableSms;
 
 /**
@@ -15,7 +17,8 @@ import com.labs.tools.database.table.TableSms;
 public class DatabaseManager extends SQLiteOpenHelper {
 
     private static final BaseTable[] REPUTASI_TABLES = {
-      new TableContact(), new TableCall(), new TableSms()
+      new TableContact(), new TableCall(), new TableSms(),
+            new TableBlockedNumber(), new TableContribute()
     };
 
     public static final String NAME = "reputasi";
