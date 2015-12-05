@@ -1,7 +1,9 @@
 package com.labs.tools.net;
 
+import com.labs.tools.net.Response.BlockedNumberResponse;
 import com.labs.tools.net.Response.LoginResponse;
 import com.labs.tools.net.Response.RegistrationResponse;
+import com.labs.tools.net.request.BlockedNumberRequest;
 import com.labs.tools.net.request.LoginRequest;
 import com.labs.tools.net.request.RegistrationRequest;
 
@@ -19,5 +21,9 @@ public interface RestService {
     @Headers(RestConstant.HEADER_CONTENT_TYPE_JSON)
     @POST(RestConstant.API_LOGIN)
     void userLogin(@Body LoginRequest request, Callback<LoginResponse> callback);
+
+    @Headers(RestConstant.HEADER_CONTENT_TYPE_JSON)
+    @POST(RestConstant.API_GET_BLOCKED_NUMBER)
+    void blockedNumberList(@Body BlockedNumberRequest request, Callback<BlockedNumberResponse> callback);
 
 }

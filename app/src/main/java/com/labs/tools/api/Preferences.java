@@ -12,6 +12,7 @@ public class Preferences {
     private static final String FILE_NAME = "reputasi_pref";
 
     private static final String PREF_SESSION_TOKEN = "sessiontoken";
+    private static final String PREF_DISCLAIMER_AGREEMENT = "disclaimeragreement";
 
     private Context mContext;
     private SharedPreferences mSharedPreferences;
@@ -38,5 +39,11 @@ public class Preferences {
         return mSharedPreferences.getString(PREF_SESSION_TOKEN, "");
     }
 
-    
+    public void setAgreeDisclaimer(boolean agree) {
+        mSharedPreferences.edit().putBoolean(PREF_DISCLAIMER_AGREEMENT, agree);
+    }
+
+    public boolean isAgreeDisclaimer() {
+        return mSharedPreferences.getBoolean(PREF_DISCLAIMER_AGREEMENT, false);
+    }
 }

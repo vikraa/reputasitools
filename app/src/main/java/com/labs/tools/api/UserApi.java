@@ -12,6 +12,7 @@ import com.labs.tools.net.RetrofitHelper;
 import com.labs.tools.net.request.LoginRequest;
 import com.labs.tools.net.request.RegistrationRequest;
 import com.labs.tools.throwable.UserAlreadyRegisteredException;
+import com.labs.tools.throwable.UserDisclaimerException;
 import com.labs.tools.throwable.UserLoginException;
 import com.labs.tools.util.AppUtils;
 import com.labs.tools.util.DeviceUtils;
@@ -84,6 +85,18 @@ public class UserApi extends BaseApi<RegistrationRequest, Callback<RegistrationR
                 callback.onError(new UserLoginException(error));
             }
         });
+    }
+
+    public void confirmDisclaimerAgreement(boolean agree, Callback<Void> callback) {
+        if (agree) {
+           callback.onSuccess(null);
+        } else {
+            callback.onError(new UserDisclaimerException("user decline agreement"));
+        }
+    }
+
+    public boolean isDisclaimerConfirmed() {
+        return Preferences.getInstance(mContext).isAgreeDisclaimer();
     }
 
     public boolean isLoggedIn() {

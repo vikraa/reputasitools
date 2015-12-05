@@ -18,8 +18,9 @@ import java.util.UUID;
  */
 public class TableBlockedNumber extends BaseTable<BlockedNumberData> {
     public static final String TABLE_NAME = "blockednumber";
-    private static final String FIELD_BLOCKED_NAME = "";
-    private static final String FIELD_BLOCKED_NUMBER = "";
+    private static final String FIELD_BLOCKED_NAME = "name";
+    private static final String FIELD_BLOCKED_NUMBER = "number";
+    private static final String FIELD_BLOCKED_CATEGORY_ID = "categoryid";
 
     @Override
     public void onCreateTable(SQLiteDatabase db) {
@@ -27,6 +28,7 @@ public class TableBlockedNumber extends BaseTable<BlockedNumberData> {
                 FIELD_ID + " TEXT PRIMARY KEY NOT NULL," +
                 FIELD_BLOCKED_NAME + " TEXT," +
                 FIELD_BLOCKED_NUMBER + " TEXT," +
+                FIELD_BLOCKED_CATEGORY_ID + " TEXT," +
                 FIELD_LAST_UPDATED_TIMESTAMP + " BIGINT," +
                 FIELD_SYNCHRONIZED_STATUS + " BIGINT )";
         db.execSQL(SQL_CREATE_TABLE);
@@ -34,7 +36,6 @@ public class TableBlockedNumber extends BaseTable<BlockedNumberData> {
 
     @Override
     public void onUpgradeTable(SQLiteDatabase db, int oldVersion, int newVersion) {
-
     }
 
     @Override
@@ -53,6 +54,7 @@ public class TableBlockedNumber extends BaseTable<BlockedNumberData> {
         contentValues.put(FIELD_ID, UUID.randomUUID().toString());
         contentValues.put(FIELD_BLOCKED_NAME, data.getName());
         contentValues.put(FIELD_BLOCKED_NUMBER, data.getNumber());
+        contentValues.put(FIELD_BLOCKED_CATEGORY_ID, data.getCategoryId());
         contentValues.put(FIELD_LAST_UPDATED_TIMESTAMP, data.getLastUpdated());
         contentValues.put(FIELD_SYNCHRONIZED_STATUS, data.getSynchronizedStatus());
         MyApplication.getContext().getContentResolver().insert(DataProvider.BLOCKEDNUMBER_URI,contentValues);
@@ -64,6 +66,7 @@ public class TableBlockedNumber extends BaseTable<BlockedNumberData> {
         contentValues.put(FIELD_ID, UUID.randomUUID().toString());
         contentValues.put(FIELD_BLOCKED_NAME, data.getName());
         contentValues.put(FIELD_BLOCKED_NUMBER, data.getNumber());
+        contentValues.put(FIELD_BLOCKED_CATEGORY_ID, data.getCategoryId());
         contentValues.put(FIELD_LAST_UPDATED_TIMESTAMP, data.getLastUpdated());
         contentValues.put(FIELD_SYNCHRONIZED_STATUS, data.getSynchronizedStatus());
         MyApplication.getContext().getContentResolver().update(DataProvider.BLOCKEDNUMBER_URI,contentValues, FIELD_ID + " = ?", new String[] { data.getId() });
@@ -84,6 +87,7 @@ public class TableBlockedNumber extends BaseTable<BlockedNumberData> {
                 contentValues.put(FIELD_ID, UUID.randomUUID().toString());
                 contentValues.put(FIELD_BLOCKED_NAME, data.getName());
                 contentValues.put(FIELD_BLOCKED_NUMBER, data.getNumber());
+                contentValues.put(FIELD_BLOCKED_CATEGORY_ID, data.getCategoryId());
                 contentValues.put(FIELD_LAST_UPDATED_TIMESTAMP, data.getLastUpdated());
                 contentValues.put(FIELD_SYNCHRONIZED_STATUS, data.getSynchronizedStatus());
                 cvList[count] = contentValues;
@@ -103,6 +107,8 @@ public class TableBlockedNumber extends BaseTable<BlockedNumberData> {
                 blockedNumberData.setId(qCursor.getString(qCursor.getColumnIndex(FIELD_ID)));
                 blockedNumberData.setName(qCursor.getString(qCursor.getColumnIndex(FIELD_BLOCKED_NAME)));
                 blockedNumberData.setNumber(qCursor.getString(qCursor.getColumnIndex(FIELD_BLOCKED_NUMBER)));
+                blockedNumberData.setCategoryId(qCursor.getString(qCursor.getColumnIndex(FIELD_BLOCKED_CATEGORY_ID)));
+                blockedNumberData.setLastUpdated(qCursor.getLong(qCursor.getColumnIndex(FIELD_LAST_UPDATED_TIMESTAMP)));
                 blockedNumberData.setSynchronizedStatus(qCursor.getInt(qCursor.getColumnIndex(FIELD_SYNCHRONIZED_STATUS)));
                 queryResult.add(blockedNumberData);
             } while(qCursor.moveToNext());

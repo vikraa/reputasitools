@@ -6,6 +6,15 @@ package com.labs.tools.database.data;
 public class BlockedNumberData extends BaseData {
     private String mName;
     private String mNumber;
+    private String mCategoryId;
+
+    public String getCategoryId() {
+        return mCategoryId;
+    }
+
+    public void setCategoryId(String categoryId) {
+        this.mCategoryId = categoryId;
+    }
 
     public String getName() {
         return mName;
