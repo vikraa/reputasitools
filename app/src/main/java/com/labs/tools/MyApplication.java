@@ -34,7 +34,7 @@ public abstract class MyApplication extends Application {
 
     public abstract String getDefaultTimestampFormat();
 
-    public RestAdapter.LogLevel getLogLevel() {
+    public static RestAdapter.LogLevel getLogLevel() {
         return mRetrofitLogEnabled ? RestAdapter.LogLevel.FULL : RestAdapter.LogLevel.NONE;
     }
 

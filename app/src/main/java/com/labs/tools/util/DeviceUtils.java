@@ -9,6 +9,9 @@ import android.util.DisplayMetrics;
 
 import com.labs.tools.MyApplication;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 /**
  * Created by Vikraa on 11/20/2015.
  */
@@ -137,5 +140,43 @@ public class DeviceUtils {
         }
     }
 
+    public static String getSimCardId() {
+        TelephonyManager tmgr = (TelephonyManager)MyApplication.getContext().getSystemService(Context.TELEPHONY_SERVICE);
+        String simICCID = tmgr.getSimSerialNumber();
+        String simISDN = tmgr.getLine1Number() == null ? "" : tmgr.getLine1Number();
 
+        if (simISDN == null) {
+            return simICCID;
+        } else if (simISDN != null && !simISDN.isEmpty() ) {
+            return simISDN;
+        } else {
+            return simICCID;
+        }
+
+    }
+
+    public static String getDeviceInfo() {
+        String phoneInfo = "";
+        String osVersion = Build.VERSION.RELEASE;
+        String deviceManufactur = Build.MANUFACTURER;
+        String deviceModel = Build.MODEL;
+        TelephonyManager tmgr = (TelephonyManager)MyApplication.getContext().getSystemService(Context.TELEPHONY_SERVICE);
+        String deviceImei = tmgr.getDeviceId();
+        String simICCID = tmgr.getSimSerialNumber();
+        String simISDN = tmgr.getLine1Number() == null ? "" : tmgr.getLine1Number();
+
+        JSONObject jsonParent = new JSONObject();
+        try {
+            jsonParent.put("osVersion", osVersion);
+            jsonParent.put("manufactur", deviceManufactur);
+            jsonParent.put("model", deviceModel);
+            jsonParent.put("imei:", deviceImei);
+            jsonParent.put("iccid", simICCID);
+            jsonParent.put("isdn", simISDN);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        phoneInfo = jsonParent.toString();
+        return phoneInfo;
+    }
 }

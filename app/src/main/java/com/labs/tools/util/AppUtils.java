@@ -1,5 +1,7 @@
 package com.labs.tools.util;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -18,5 +20,24 @@ public class AppUtils {
         SimpleDateFormat sdf = new SimpleDateFormat(format);
         return sdf.format(date);
     }
+
+    public static String generateMd5(String input) {
+        String result = "";
+        MessageDigest diggest = null;
+        try {
+            diggest = MessageDigest.getInstance("MD5");
+            diggest.update(input.getBytes());
+            byte[] diggestBytes = diggest.digest();
+            StringBuffer buffString = new StringBuffer();
+            for (int i = 0; i < diggestBytes.length; i++)  {
+                buffString.append(Integer.toHexString(0xFF & diggestBytes[i]));
+            }
+            return buffString.toString();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
 
 }
