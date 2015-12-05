@@ -1,6 +1,7 @@
 package com.labs.tools.api;
 
 import android.content.Context;
+import android.text.TextUtils;
 
 import com.labs.tools.MyApplication;
 import com.labs.tools.callback.Callback;
@@ -49,6 +50,7 @@ public class UserApi extends BaseApi<RegistrationRequest, Callback<RegistrationR
         }, MyApplication.getLogLevel()).userRegister(registrationRequest, new retrofit.Callback<RegistrationResponse>() {
             @Override
             public void success(RegistrationResponse registrationResponse, Response response) {
+                Preferences.getInstance(mContext).putSession(registrationResponse.getSessionToken());
                 callback.onSuccess(null);
             }
 
@@ -73,6 +75,7 @@ public class UserApi extends BaseApi<RegistrationRequest, Callback<RegistrationR
         }, MyApplication.getLogLevel()).userLogin(loginRequest, new retrofit.Callback<LoginResponse>() {
             @Override
             public void success(LoginResponse loginResponse, Response response) {
+                Preferences.getInstance(mContext).putSession(loginResponse.getSessionToken());
                 callback.onSuccess(null);
             }
 
@@ -84,11 +87,11 @@ public class UserApi extends BaseApi<RegistrationRequest, Callback<RegistrationR
     }
 
     public boolean isLoggedIn() {
-        return true;
+        return TextUtils.isEmpty(Preferences.getInstance(mContext).getSessionToken()) ? false : true;
     }
 
     public boolean isRegistered() {
-        return true;
+        return TextUtils.isEmpty(Preferences.getInstance(mContext).getSessionToken()) ? false : true;
     }
 
 }
