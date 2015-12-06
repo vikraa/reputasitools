@@ -128,7 +128,24 @@ public class TableBlockedNumber extends BaseTable<BlockedNumberData> {
 
     @Override
     public BlockedNumberData find(String[] fields, String... keys) {
-        return null;
+        String sql = "";
+        for (String st : fields) {
+            sql += fields + " = ? AND ";
+        }
+        sql = sql.substring(0, sql.length() - 6);
+
+        Cursor qCursor = MyApplication.getContext().getContentResolver().query(DataProvider.BLOCKEDNUMBER_URI, null, sql, keys, null);
+        BlockedNumberData result = null;
+        if (qCursor != null && qCursor.moveToFirst()) {
+            result = new BlockedNumberData();
+            result.setId(qCursor.getString(qCursor.getColumnIndex(FIELD_ID)));
+            result.setName(qCursor.getString(qCursor.getColumnIndex(FIELD_BLOCKED_NAME)));
+            result.setNumber(qCursor.getString(qCursor.getColumnIndex(FIELD_BLOCKED_NUMBER)));
+            result.setCategoryId(qCursor.getString(qCursor.getColumnIndex(FIELD_BLOCKED_CATEGORY_ID)));
+            result.setSynchronizedStatus(qCursor.getInt(qCursor.getColumnIndex(FIELD_SYNCHRONIZED_STATUS)));
+            result.setLastUpdated(qCursor.getLong(qCursor.getColumnIndex(FIELD_LAST_UPDATED_TIMESTAMP)));
+        }
+        return result;
     }
 
     @Override
