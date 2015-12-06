@@ -136,7 +136,7 @@ public class TableSms extends BaseTable<SmsData> {
     }
 
     @Override
-    public SmsData find(String... keys) {
+    public SmsData find(String[] fields,String... keys) {
         return null;
     }
 

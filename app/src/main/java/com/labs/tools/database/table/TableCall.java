@@ -133,7 +133,7 @@ public class TableCall extends BaseTable<CallData> {
     }
 
     @Override
-    public CallData find(String... keys) {
+    public CallData find(String[] fields,String... keys) {
         return null;
     }
 

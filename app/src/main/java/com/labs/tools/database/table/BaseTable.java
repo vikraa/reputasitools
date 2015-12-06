@@ -25,6 +25,6 @@ public abstract class BaseTable<T> {
     public abstract void insert(List<T> dataList);
     public abstract List<T> getAll();
     public abstract int getCount();
-    public abstract T find(String...keys);
+    public abstract T find(String[] fields, String...keys);
     public abstract String getTableName();
 }

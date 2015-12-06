@@ -127,7 +127,7 @@ public class TableContribute extends BaseTable<ContributeData> {
     }
 
     @Override
-    public ContributeData find(String... keys) {
+    public ContributeData find(String[] fields,String... keys) {
         return null;
     }
 

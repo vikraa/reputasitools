@@ -22,7 +22,8 @@ public class RestConstant {
     /* api url */
     public static final String API_REGISTRATION = "";
     public static final String API_LOGIN = "";
-    public static final String API_GET_BLOCKED_NUMBER = "";
-    public static final String API_ADD_BLOCKED_NUMBER = "";
-    public static final String API_CONTRIUTE_NUMBER = "";
+    public static final String API_GET_BLOCKED_NUMBER = "/1/functions/getUserSpecialNumber";;
+    public static final String API_ADD_BLOCKED_NUMBER = "/1/functions/addUserSpecialNumber";
+    public static final String API_REMOVE_BLOCKED_NUMBER = "/1/functions/deleteUserSpecialNumber";
+    public static final String API_CONTRIUTE_NUMBER = "/1/functions/contributeNumber";
 }

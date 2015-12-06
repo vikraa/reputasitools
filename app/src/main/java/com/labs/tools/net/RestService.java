@@ -26,4 +26,11 @@ public interface RestService {
     @POST(RestConstant.API_GET_BLOCKED_NUMBER)
     void blockedNumberList(@Body BlockedNumberRequest request, Callback<BlockedNumberResponse> callback);
 
+    @Headers(RestConstant.HEADER_CONTENT_TYPE_JSON)
+    @POST(RestConstant.API_ADD_BLOCKED_NUMBER)
+    void addBlockedNumber(@Body BlockedNumberRequest request, Callback<BlockedNumberResponse> callback);
+
+    @Headers(RestConstant.HEADER_CONTENT_TYPE_JSON)
+    @POST(RestConstant.API_REMOVE_BLOCKED_NUMBER)
+    void removeBlockedNumber(@Body BlockedNumberRequest request, Callback<BlockedNumberResponse> callback);
 }

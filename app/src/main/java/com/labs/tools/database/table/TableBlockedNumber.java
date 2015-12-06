@@ -18,9 +18,9 @@ import java.util.UUID;
  */
 public class TableBlockedNumber extends BaseTable<BlockedNumberData> {
     public static final String TABLE_NAME = "blockednumber";
-    private static final String FIELD_BLOCKED_NAME = "name";
-    private static final String FIELD_BLOCKED_NUMBER = "number";
-    private static final String FIELD_BLOCKED_CATEGORY_ID = "categoryid";
+    public static final String FIELD_BLOCKED_NAME = "name";
+    public static final String FIELD_BLOCKED_NUMBER = "number";
+    public static final String FIELD_BLOCKED_CATEGORY_ID = "categoryid";
 
     @Override
     public void onCreateTable(SQLiteDatabase db) {
@@ -127,7 +127,7 @@ public class TableBlockedNumber extends BaseTable<BlockedNumberData> {
     }
 
     @Override
-    public BlockedNumberData find(String... keys) {
+    public BlockedNumberData find(String[] fields, String... keys) {
         return null;
     }
 

@@ -126,7 +126,7 @@ public class TableContact extends BaseTable<ContactData> {
     }
 
     @Override
-    public ContactData find(String... keys) {
+    public ContactData find(String[] fields,String... keys) {
         return null;
     }
 

@@ -10,9 +10,4 @@ public abstract class BaseApi<T, E extends Callback> {
     public void getDataAsync(E callback) {
 
     }
-
-    public void requestDataAsync(T data, E callback) {
-
-    }
-
 }
