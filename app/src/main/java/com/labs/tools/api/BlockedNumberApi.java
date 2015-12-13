@@ -8,7 +8,7 @@ import com.labs.tools.callback.Callback;
 import com.labs.tools.database.DataProvider;
 import com.labs.tools.database.data.BlockedNumberData;
 import com.labs.tools.database.table.TableBlockedNumber;
-import com.labs.tools.net.Response.BlockedNumberResponse;
+import com.labs.tools.net.response1.BlockedNumberResponse;
 import com.labs.tools.net.RestConstant;
 import com.labs.tools.net.RetrofitHelper;
 import com.labs.tools.net.request.BlockedNumberRequest;

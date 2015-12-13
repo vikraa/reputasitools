@@ -15,4 +15,12 @@ public class ContributeApi extends BaseApi<Void, Callback<Void>> {
         this.mContext = context;
     }
 
+    @Override
+    public void getDataAsync(Callback<Void> callback) {
+
+    }
+
+    public void addContribute(String name, String number, String notes, Callback<Void> callback) {
+
+    }
 }
