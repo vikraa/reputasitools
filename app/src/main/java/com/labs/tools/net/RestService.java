@@ -1,8 +1,8 @@
 package com.labs.tools.net;
 
-import com.labs.tools.net.response1.BlockedNumberResponse;
-import com.labs.tools.net.response1.LoginResponse;
-import com.labs.tools.net.response1.RegistrationResponse;
+import com.labs.tools.net.response.BlockedNumberResponse;
+import com.labs.tools.net.response.LoginResponse;
+import com.labs.tools.net.response.RegistrationResponse;
 import com.labs.tools.net.request.BlockedNumberRequest;
 import com.labs.tools.net.request.LoginRequest;
 import com.labs.tools.net.request.RegistrationRequest;

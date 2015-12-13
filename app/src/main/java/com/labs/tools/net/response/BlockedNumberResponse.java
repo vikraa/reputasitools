@@ -1,4 +1,4 @@
-package com.labs.tools.net.response1;
+package com.labs.tools.net.response;
 
 import com.google.gson.annotations.SerializedName;
 
