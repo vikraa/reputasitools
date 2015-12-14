@@ -122,6 +122,7 @@ public class TableSms extends BaseTable<SmsData> {
                 queryResult.add(smsdata);
             } while(qCursor.moveToNext());
         }
+        qCursor.close();
         return queryResult;
     }
 
@@ -132,6 +133,7 @@ public class TableSms extends BaseTable<SmsData> {
         if (qCursor.moveToFirst()) {
             counter = qCursor.getCount();
         }
+        qCursor.close();
         return counter;
     }
 

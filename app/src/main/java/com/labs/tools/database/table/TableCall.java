@@ -119,6 +119,7 @@ public class TableCall extends BaseTable<CallData> {
                 queryResult.add(calldata);
             } while (qCursor.moveToNext());
         }
+        qCursor.close();
         return queryResult;
     }
 
@@ -129,6 +130,7 @@ public class TableCall extends BaseTable<CallData> {
         if (qCursor.moveToFirst()) {
             counter = qCursor.getCount();
         }
+        qCursor.close();
         return counter;
     }
 

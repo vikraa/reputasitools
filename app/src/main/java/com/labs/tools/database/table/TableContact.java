@@ -21,9 +21,9 @@ import java.util.UUID;
 public class TableContact extends BaseTable<ContactData> {
 
     public static final String TABLE_NAME = "contact";
-    public final String FIELD_CONTACT_NAME = "name";
-    public final String FIELD_CONTACT_NUMBER = "number";
-    public final String FIELD_CONTACT_EMAIL = "email";
+    public static final String FIELD_CONTACT_NAME = "name";
+    public static final String FIELD_CONTACT_NUMBER = "number";
+    public static final String FIELD_CONTACT_EMAIL = "email";
 
     @Override
     public void onCreateTable(SQLiteDatabase db) {
@@ -112,6 +112,7 @@ public class TableContact extends BaseTable<ContactData> {
                 queryResult.add(contact);
             } while(qCursor.moveToNext());
         }
+        qCursor.close();
         return queryResult;
     }
 
@@ -122,6 +123,7 @@ public class TableContact extends BaseTable<ContactData> {
         if (qCursor.moveToFirst()) {
             counter = qCursor.getCount();
         }
+        qCursor.close();
         return counter;
     }
 

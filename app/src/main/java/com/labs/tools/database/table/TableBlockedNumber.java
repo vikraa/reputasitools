@@ -123,6 +123,7 @@ public class TableBlockedNumber extends BaseTable<BlockedNumberData> {
         if (qCursor.moveToFirst()) {
             counter = qCursor.getCount();
         }
+        qCursor.close();
         return counter;
     }
 
@@ -145,6 +146,7 @@ public class TableBlockedNumber extends BaseTable<BlockedNumberData> {
             result.setSynchronizedStatus(qCursor.getInt(qCursor.getColumnIndex(FIELD_SYNCHRONIZED_STATUS)));
             result.setLastUpdated(qCursor.getLong(qCursor.getColumnIndex(FIELD_LAST_UPDATED_TIMESTAMP)));
         }
+        qCursor.close();
         return result;
     }
 

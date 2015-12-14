@@ -113,6 +113,7 @@ public class TableContribute extends BaseTable<ContributeData> {
                 queryResult.add(contributedata);
             } while(qCursor.moveToNext());
         }
+        qCursor.close();
         return queryResult;
     }
 
@@ -123,6 +124,7 @@ public class TableContribute extends BaseTable<ContributeData> {
         if (qCursor.moveToFirst()) {
             counter = qCursor.getCount();
         }
+        qCursor.close();
         return counter;
     }
 

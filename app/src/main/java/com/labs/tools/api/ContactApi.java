@@ -8,6 +8,7 @@ import android.provider.ContactsContract;
 import com.labs.tools.MyApplication;
 import com.labs.tools.R;
 import com.labs.tools.callback.Callback;
+import com.labs.tools.database.DataProvider;
 import com.labs.tools.database.data.ContactData;
 import com.labs.tools.database.table.TableContact;
 import com.labs.tools.net.RetrofitHelper;
@@ -26,7 +27,6 @@ public class ContactApi extends BaseApi<Void, Callback<List<ContactData>>> {
     private RetrofitHelper mRetrofit;
     private ContentResolver mContentResolver;
 
-
     public ContactApi(Context context) {
         this.mContext = context;
         mRetrofit = new RetrofitHelper();
@@ -34,44 +34,63 @@ public class ContactApi extends BaseApi<Void, Callback<List<ContactData>>> {
     }
 
 
-    public void readAllContact(boolean refresh, final Callback<List<ContactData>> callback) {
+    public void readAllContact(final boolean refresh, final Callback<List<ContactData>> callback) {
         Runnable runable = new Runnable() {
             @Override
             public void run() {
-                TableContact tableContact = new TableContact();
-                Cursor contactCursor = mContentResolver.query(ContactsContract.Contacts.CONTENT_URI, null, null, null, null);
                 List<ContactData> listContactData = new ArrayList<>();
-                if (contactCursor.getCount() > 0) {
-                    while (contactCursor.moveToNext()) {
-                        if (Integer.parseInt(contactCursor.getString(contactCursor.getColumnIndex(ContactsContract.Contacts.HAS_PHONE_NUMBER))) > 0 ) {
-                            String id = contactCursor.getString(contactCursor.getColumnIndex(ContactsContract.Contacts._ID));
-                            String name = contactCursor.getString(contactCursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
-                            Cursor phoneCursor = mContentResolver.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = ?", new String[] { id }, null);
-                            while (phoneCursor.moveToNext()){
-                                ContactData contactData = new ContactData();
-                                contactData.setId(UUID.randomUUID().toString());
-                                contactData.setName(name);
-                                contactData.setNumber(phoneCursor.getString(phoneCursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER)));
-                                contactData.setEmail("");
-                                contactData.setLastUpdated(TimeUtils.getCurrentTimestamp());
-                                contactData.setSynchronizedStatus(TableContact.STATUS_SYNCHRONIZED_FAILED);
-                                listContactData.add(contactData);
+                if(refresh) {
+                    TableContact tableContact = new TableContact();
+                    mContentResolver.delete(DataProvider.CONTACT_URI, null, null);
+                    Cursor contactCursor = mContentResolver.query(ContactsContract.Contacts.CONTENT_URI, null, null, null, null);
+                    if (contactCursor.getCount() > 0) {
+                        while (contactCursor.moveToNext()) {
+                            if (Integer.parseInt(contactCursor.getString(contactCursor.getColumnIndex(ContactsContract.Contacts.HAS_PHONE_NUMBER))) > 0 ) {
+                                String id = contactCursor.getString(contactCursor.getColumnIndex(ContactsContract.Contacts._ID));
+                                String name = contactCursor.getString(contactCursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
+                                Cursor phoneCursor = mContentResolver.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = ?", new String[] { id }, null);
+                                while (phoneCursor.moveToNext()){
+                                    ContactData contactData = new ContactData();
+                                    contactData.setId(UUID.randomUUID().toString());
+                                    contactData.setName(name);
+                                    contactData.setNumber(phoneCursor.getString(phoneCursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER)));
+                                    contactData.setEmail("");
+                                    contactData.setLastUpdated(TimeUtils.getCurrentTimestamp());
+                                    contactData.setSynchronizedStatus(TableContact.STATUS_SYNCHRONIZED_FAILED);
+                                    listContactData.add(contactData);
+                                }
+                                phoneCursor.close();;
                             }
-                            phoneCursor.close();;
+                        }
+                        contactCursor.close();
+
+                        if (listContactData.size() > 0) {
+                            tableContact.insert(listContactData);
+                        }
+
+                        if (callback != null) {
+                            callback.onSuccess(listContactData);
+                        }
+                    } else {
+                        if (callback != null) {
+                            callback.onError(new ContactReadException(MyApplication.getContext().getString(R.string.read_contact_empty)));
                         }
                     }
-                    contactCursor.close();
-
-                    if (listContactData.size() > 0) {
-                        tableContact.insert(listContactData);
+                } else {
+                    Cursor contactCursor = mContentResolver.query(DataProvider.CONTACT_URI, null, null, null, null);
+                    while (contactCursor.moveToNext()) {
+                        ContactData contactData = new ContactData();
+                        contactData.setId(contactCursor.getString(contactCursor.getColumnIndex(TableContact.FIELD_ID)));
+                        contactData.setName(contactCursor.getString(contactCursor.getColumnIndex(TableContact.FIELD_CONTACT_NAME)));
+                        contactData.setNumber(contactCursor.getString(contactCursor.getColumnIndex(TableContact.FIELD_CONTACT_NUMBER)));
+                        contactData.setEmail(contactCursor.getString(contactCursor.getColumnIndex(TableContact.FIELD_CONTACT_EMAIL)));
+                        contactData.setLastUpdated(contactCursor.getLong(contactCursor.getColumnIndex(TableContact.FIELD_LAST_UPDATED_TIMESTAMP)));
+                        contactData.setSynchronizedStatus(contactCursor.getInt(contactCursor.getColumnIndex(TableContact.FIELD_SYNCHRONIZED_STATUS)));
+                        listContactData.add(contactData);
                     }
-
+                    contactCursor.close();
                     if (callback != null) {
                         callback.onSuccess(listContactData);
-                    }
-                } else {
-                    if (callback != null) {
-                        callback.onError(new ContactReadException(MyApplication.getContext().getString(R.string.read_contact_empty)));
                     }
                 }
             }
@@ -82,7 +101,13 @@ public class ContactApi extends BaseApi<Void, Callback<List<ContactData>>> {
     }
 
     public void syncContact(Callback<Integer> callback) {
+        Cursor cursor = mContentResolver.query(DataProvider.CONTACT_URI, null, TableContact.FIELD_SYNCHRONIZED_STATUS + " = ? ", new String[] { String.valueOf(TableContact.STATUS_SYNCHRONIZED_FAILED) }, null);
+        if (cursor.getCount() > 0) {
+            while(cursor.moveToNext()) {
 
+            }
+        }
+        cursor.close();
     }
 
     public int getCountUnsynchronizedList() {
