@@ -25,5 +25,6 @@ public class RestConstant {
     public static final String API_GET_BLOCKED_NUMBER = "/1/functions/getUserSpecialNumber";;
     public static final String API_ADD_BLOCKED_NUMBER = "/1/functions/addUserSpecialNumber";
     public static final String API_REMOVE_BLOCKED_NUMBER = "/1/functions/deleteUserSpecialNumber";
-    public static final String API_CONTRIUTE_NUMBER = "/1/functions/contributeNumber";
+    public static final String API_CONTRIBUTE_NUMBER = "/1/functions/contributeNumber";
+    public static final String API_SEARCH_NUMBER = "/1/funcstions/searchNumber";
 }

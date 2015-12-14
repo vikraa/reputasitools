@@ -21,9 +21,9 @@ import java.util.UUID;
 public class TableContact extends BaseTable<ContactData> {
 
     public static final String TABLE_NAME = "contact";
-    private final String FIELD_CONTACT_NAME = "name";
-    private final String FIELD_CONTACT_NUMBER = "number";
-    private final String FIELD_CONTACT_EMAIL = "email";
+    public final String FIELD_CONTACT_NAME = "name";
+    public final String FIELD_CONTACT_NUMBER = "number";
+    public final String FIELD_CONTACT_EMAIL = "email";
 
     @Override
     public void onCreateTable(SQLiteDatabase db) {

@@ -19,9 +19,9 @@ import java.util.UUID;
 public class TableCall extends BaseTable<CallData> {
 
     public static final String TABLE_NAME = "contact";
-    private static String FIELD_CALL_FROM_NAME = "fromname";
-    private static String FIELD_CALL_NUMBER = "number";
-    private static String FIELD_CALL_TYPE = "type";
+    public static String FIELD_CALL_FROM_NAME = "fromname";
+    public static String FIELD_CALL_NUMBER = "number";
+    public static String FIELD_CALL_TYPE = "type";
 
     public static final int CALL_TYPE_ANSWERED = 0;
     public static final int CALL_TYPE_REJECTED = 1;

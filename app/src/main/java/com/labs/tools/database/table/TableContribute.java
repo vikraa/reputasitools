@@ -18,9 +18,9 @@ import java.util.UUID;
  */
 public class TableContribute extends BaseTable<ContributeData> {
     public static final String TABLE_NAME = "contribute";
-    private static String FIELD_CONTRIBUTE_NAME = "name";
-    private static String FIELD_CONTRIBUTE_NUMBER = "number";
-    private static String FIELD_CONTRIBUTE_NOTES = "notes";
+    public static String FIELD_CONTRIBUTE_NAME = "name";
+    public static String FIELD_CONTRIBUTE_NUMBER = "number";
+    public static String FIELD_CONTRIBUTE_NOTES = "notes";
 
     @Override
     public void onCreateTable(SQLiteDatabase db) {

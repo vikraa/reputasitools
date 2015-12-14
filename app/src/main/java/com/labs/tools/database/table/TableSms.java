@@ -18,10 +18,10 @@ import java.util.UUID;
  */
 public class TableSms extends BaseTable<SmsData> {
     public static final String TABLE_NAME = "messages";
-    private final String FIELD_SMS_SENDER = "sender";
-    private final String FIELD_SMS_CONTENT = "content";
-    private final String FIELD_SMS_BLOCK_STATUS = "blockedstatus";
-    private final String FIELD_SMS_RECEIVED_TIMESTAMP = "receivedtimestamp";
+    public final String FIELD_SMS_SENDER = "sender";
+    public final String FIELD_SMS_CONTENT = "content";
+    public final String FIELD_SMS_BLOCK_STATUS = "blockedstatus";
+    public final String FIELD_SMS_RECEIVED_TIMESTAMP = "receivedtimestamp";
 
     public static final int SMS_STATUS_BLOCKED = 1;
     public static final int SMS_STATUS_ALLOWED = 0;

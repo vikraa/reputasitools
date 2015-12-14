@@ -10,9 +10,9 @@ import java.util.List;
 public abstract class BaseTable<T> {
     public static final int STATUS_SYNCHRONIZED_SUCCESS = 1;
     public static final int STATUS_SYNCHRONIZED_FAILED = 0;
-    protected String FIELD_ID = "rowid";
-    protected String FIELD_LAST_UPDATED_TIMESTAMP = "lastupdated";
-    protected String FIELD_SYNCHRONIZED_STATUS = "synchronizedstatus";
+    public static String FIELD_ID = "rowid";
+    public static String FIELD_LAST_UPDATED_TIMESTAMP = "lastupdated";
+    public static String FIELD_SYNCHRONIZED_STATUS = "synchronizedstatus";
     protected String SQL_DROP_TABLE = "drop table ";
     protected String SQL_DELETE_ALL_CONTENTS = "delete from ";
     public abstract void onCreateTable(SQLiteDatabase db);
