@@ -8,6 +8,7 @@ import java.util.List;
  * Created by Vikraa on 11/26/2015.
  */
 public abstract class BaseTable<T> {
+    public static final int STATUS_SYNCHRONIZED_TASK_FINISH = 2;
     public static final int STATUS_SYNCHRONIZED_SUCCESS = 1;
     public static final int STATUS_SYNCHRONIZED_FAILED = 0;
     public static String FIELD_ID = "rowid";

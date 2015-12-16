@@ -11,13 +11,19 @@ import com.labs.tools.callback.Callback;
 import com.labs.tools.database.DataProvider;
 import com.labs.tools.database.data.ContactData;
 import com.labs.tools.database.table.TableContact;
+import com.labs.tools.net.RestConstant;
 import com.labs.tools.net.RetrofitHelper;
+import com.labs.tools.net.request.ContactRequest;
+import com.labs.tools.net.response.ContactResponse;
 import com.labs.tools.throwable.ContactReadException;
 import com.labs.tools.util.TimeUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+
+import retrofit.RequestInterceptor;
+import retrofit.RetrofitError;
 
 /**
  * Created by vikraa on 12/13/2015.
@@ -100,14 +106,50 @@ public class ContactApi extends BaseApi<Void, Callback<List<ContactData>>> {
 
     }
 
-    public void syncContact(Callback<Integer> callback) {
-        Cursor cursor = mContentResolver.query(DataProvider.CONTACT_URI, null, TableContact.FIELD_SYNCHRONIZED_STATUS + " = ? ", new String[] { String.valueOf(TableContact.STATUS_SYNCHRONIZED_FAILED) }, null);
-        if (cursor.getCount() > 0) {
-            while(cursor.moveToNext()) {
-
+    public void syncContact(final Callback<Integer> callback) {
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                Cursor cursor = mContentResolver.query(DataProvider.CONTACT_URI, null, TableContact.FIELD_SYNCHRONIZED_STATUS + " = ? ", new String[] { String.valueOf(TableContact.STATUS_SYNCHRONIZED_FAILED) }, null);
+                if (cursor.getCount() > 0) {
+                    TableContact tableContact = new TableContact();
+                    while(cursor.moveToNext()) {
+                        ContactData contactData = new ContactData();
+                        contactData.setId(cursor.getString(cursor.getColumnIndex(TableContact.FIELD_ID)));
+                        contactData.setName(cursor.getString(cursor.getColumnIndex(TableContact.FIELD_CONTACT_NAME)));
+                        contactData.setNumber(cursor.getString(cursor.getColumnIndex(TableContact.FIELD_CONTACT_NUMBER)));
+                        contactData.setEmail(cursor.getString(cursor.getColumnIndex(TableContact.FIELD_CONTACT_EMAIL)));
+                        try {
+                            ContactResponse response = mRetrofit.createRestService(RestConstant.SERVER_END_POINT, RetrofitHelper.DEFAULT_CONNECTION_TIMEOUT, RetrofitHelper.DEFAULT_CONNECTION_TIMEOUT, new RequestInterceptor() {
+                                @Override
+                                public void intercept(RequestFacade request) {
+                                    request.addHeader(RestConstant.HEADER_X_PARSE_APPLICATION_ID, RestConstant.APPLICATION_ID);
+                                    request.addHeader(RestConstant.HEADER_X_PARSE_REST_API_ID, RestConstant.REST_ID);
+                                    request.addHeader(RestConstant.HEADER_X_PARSE_SESSIONTOKEN, Preferences.getInstance(mContext).getSessionToken());
+                                }
+                            }, MyApplication.getLogLevel()).syncContact(new ContactRequest(cursor.getString(cursor.getColumnIndex(TableContact.FIELD_CONTACT_NAME)),
+                                    cursor.getString(cursor.getColumnIndex(TableContact.FIELD_CONTACT_NUMBER))));
+                            if (response != null) {
+                                contactData.setLastUpdated(TimeUtils.getCurrentTimestamp());
+                                contactData.setSynchronizedStatus(TableContact.STATUS_SYNCHRONIZED_SUCCESS);
+                            }
+                        } catch (RetrofitError err) {
+                            contactData.setLastUpdated(TimeUtils.getCurrentTimestamp());
+                            contactData.setSynchronizedStatus(TableContact.STATUS_SYNCHRONIZED_FAILED);
+                        } catch (Exception ex) {
+                            contactData.setLastUpdated(TimeUtils.getCurrentTimestamp());
+                            contactData.setSynchronizedStatus(TableContact.STATUS_SYNCHRONIZED_FAILED);
+                        } finally {
+                            tableContact.update(contactData);
+                        }
+                    }
+                }
+                cursor.close();
+                callback.onSuccess(TableContact.STATUS_SYNCHRONIZED_TASK_FINISH);
             }
-        }
-        cursor.close();
+        };
+
+        new Thread(runnable).start();
     }
 
     public int getCountUnsynchronizedList() {
