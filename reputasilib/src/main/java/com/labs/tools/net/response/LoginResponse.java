@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName;
 /**
  * Created by vikraa on 12/5/2015.
  */
-public class LoginResponse extends BaseResponse {
+public class LoginResponse extends BaseParseResponse {
     @SerializedName("sessionToken")
     private String mSessionToken;
 

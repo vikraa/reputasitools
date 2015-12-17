@@ -7,7 +7,7 @@ import java.util.HashMap;
 /**
  * Created by vikraa on 12/5/2015.
  */
-public abstract class BaseResponse {
+public abstract class BaseParseResponse {
     @SerializedName("objectId")
     private String mObjectId;
     @SerializedName("updatedAt")

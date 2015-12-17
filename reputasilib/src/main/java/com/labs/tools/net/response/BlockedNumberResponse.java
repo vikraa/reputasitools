@@ -7,7 +7,7 @@ import java.util.List;
 /**
  * Created by vikraa on 12/5/2015.
  */
-public class BlockedNumberResponse extends BaseResponse {
+public class BlockedNumberResponse extends BaseParseResponse {
 
     @SerializedName("result")
     private List<Data> mData;
