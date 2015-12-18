@@ -1,20 +1,52 @@
 package com.labs.tools.example;
 
+import android.app.Activity;
+import android.content.Context;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+
+import com.labs.tools.api.UserApi;
+import com.labs.tools.callback.Callback;
 
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends Activity {
+    private UserApi mUserApi;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        Button btn = (Button)findViewById(R.id.btn_test);
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                testUserApi(ExampleApplication.getContext());
+            }
+        });
 
     }
+
+
+    private void testUserApi(Context context) {
+        mUserApi = new UserApi(context);
+        mUserApi.register(new Callback<Void>() {
+            @Override
+            public void onSuccess(Void result) {
+                Log.d("userapi","success register");
+            }
+
+            @Override
+            public void onError(Throwable errorResult) {
+                Log.d("userapi","failed register");
+            }
+        });
+    }
+
 
 //    @Override
 //    public boolean onCreateOptionsMenu(Menu menu) {

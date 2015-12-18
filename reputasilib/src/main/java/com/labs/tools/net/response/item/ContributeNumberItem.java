@@ -3,13 +3,13 @@ package com.labs.tools.net.response.item;
 import com.google.gson.annotations.SerializedName;
 
 /**
- * Created by vikraa on 12/17/2015.
+ * Created by Vikraa on 12/18/2015.
  */
-public class SearchNumberItem extends BaseCloudItem {
+public class ContributeNumberItem extends BaseCloudItem {
     @SerializedName("category")
     private String mCategoryId;
     @SerializedName("noOfRequests")
-    private int mNumberOfRequests;
+    private int mRequestCounts;
     @SerializedName("ownerAddress")
     private String mOwnerAddress;
     @SerializedName("ownerName")
@@ -19,16 +19,16 @@ public class SearchNumberItem extends BaseCloudItem {
     @SerializedName("score")
     private int mScore;
     @SerializedName("thumbDown")
-    private int mThumbDownScore;
+    private int mThumbDown;
     @SerializedName("thumbUp")
-    private int mThumbUpScore;
+    private int mThumbUp;
 
     public String getCategoryId() {
         return mCategoryId;
     }
 
-    public int getNumberOfRequests() {
-        return mNumberOfRequests;
+    public int getRequestCounts() {
+        return mRequestCounts;
     }
 
     public String getOwnerAddress() {
@@ -47,11 +47,11 @@ public class SearchNumberItem extends BaseCloudItem {
         return mScore;
     }
 
-    public int getThumbDownScore() {
-        return mThumbDownScore;
+    public int getThumbDown() {
+        return mThumbDown;
     }
 
-    public int getThumbUpScore() {
-        return mThumbUpScore;
+    public int getThumbUp() {
+        return mThumbUp;
     }
 }

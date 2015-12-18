@@ -16,6 +16,7 @@ import com.labs.tools.throwable.NetworkException;
 import com.labs.tools.throwable.UserAlreadyRegisteredException;
 import com.labs.tools.throwable.UserDisclaimerException;
 import com.labs.tools.throwable.UserLoginException;
+import com.labs.tools.throwable.UserRegisterException;
 import com.labs.tools.util.AppUtils;
 import com.labs.tools.util.DeviceUtils;
 import com.labs.tools.util.NetworkUtils;
@@ -62,7 +63,11 @@ public class UserApi extends BaseApi<RegistrationRequest, Callback<RegistrationR
 
                 @Override
                 public void failure(RetrofitError error) {
-                    callback.onError(new UserAlreadyRegisteredException(error));
+                    if (error.getResponse().getStatus() == RestConstant.RESPONSE_USER_ALREADY_REGISTERED) {
+                        callback.onError(new UserAlreadyRegisteredException(error));
+                    } else {
+                        callback.onError(new UserRegisterException(mContext.getString(R.string.user_failed_to_register)));
+                    }
                 }
             });
         } else {

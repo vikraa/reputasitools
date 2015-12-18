@@ -3,7 +3,7 @@ package com.labs.tools.net.response;
 /**
  * Created by vikraa on 12/16/2015.
  */
-public class ContactResponse extends BaseParseResponse {
+public class ContactResponse extends BaseCloudResponse<String> {
     public ContactResponse() {
     }
 }

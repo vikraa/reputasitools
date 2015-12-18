@@ -9,5 +9,6 @@ import java.util.List;
  */
 public class SearchResponse extends BaseCloudResponse<List<SearchNumberItem>> {
     public SearchResponse() {
+
     }
 }

@@ -28,12 +28,6 @@ public abstract class MyApplication extends Application {
         mRetrofitLogEnabled = enabled;
     }
 
-    public abstract String getApiEndPoint();
-
-    public abstract String getApiClientId();
-
-    public abstract String getDefaultTimestampFormat();
-
     public static RestAdapter.LogLevel getLogLevel() {
         return mRetrofitLogEnabled ? RestAdapter.LogLevel.FULL : RestAdapter.LogLevel.NONE;
     }
