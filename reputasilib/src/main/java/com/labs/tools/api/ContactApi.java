@@ -11,12 +11,18 @@ import com.labs.tools.callback.Callback;
 import com.labs.tools.database.DataProvider;
 import com.labs.tools.database.data.ContactData;
 import com.labs.tools.database.table.TableContact;
+import com.labs.tools.model.ContactModel;
 import com.labs.tools.net.RestConstant;
 import com.labs.tools.net.RetrofitHelper;
 import com.labs.tools.net.request.ContactRequest;
 import com.labs.tools.net.response.ContactResponse;
 import com.labs.tools.throwable.ContactReadException;
+import com.labs.tools.util.AppUtils;
 import com.labs.tools.util.TimeUtils;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,11 +46,14 @@ public class ContactApi extends BaseApi<Void, Callback<List<ContactData>>> {
     }
 
 
-    public void readAllContact(final boolean refresh, final Callback<List<ContactData>> callback) {
+    public void readAllContact(final boolean refresh, final Callback<ContactModel> callback) {
         Runnable runable = new Runnable() {
             @Override
             public void run() {
+                ContactModel model = new ContactModel();
                 List<ContactData> listContactData = new ArrayList<>();
+                JSONObject jsonObject = new JSONObject();
+                JSONArray jsonArray = new JSONArray();
                 if(refresh) {
                     TableContact tableContact = new TableContact();
                     mContentResolver.delete(DataProvider.CONTACT_URI, null, null);
@@ -64,6 +73,14 @@ public class ContactApi extends BaseApi<Void, Callback<List<ContactData>>> {
                                     contactData.setLastUpdated(TimeUtils.getCurrentTimestamp());
                                     contactData.setSynchronizedStatus(TableContact.STATUS_SYNCHRONIZED_FAILED);
                                     listContactData.add(contactData);
+                                    try {
+                                        JSONObject item = new JSONObject();
+                                        item.put("contactName", contactData.getName());
+                                        item.put("contactNumber",contactData.getNumber());
+                                        jsonArray.put(item);
+                                    } catch (JSONException ex) {
+                                        ex.printStackTrace();
+                                    }
                                 }
                                 phoneCursor.close();;
                             }
@@ -74,8 +91,16 @@ public class ContactApi extends BaseApi<Void, Callback<List<ContactData>>> {
                             tableContact.insert(listContactData);
                         }
 
+                        model.setContactList(listContactData);
+                        try{
+                            jsonObject.put("contacts",jsonArray);
+                        } catch (JSONException ex) {
+                            ex.printStackTrace();
+                        }
+                        model.setHash(AppUtils.generateMd5(jsonObject.toString()));
+
                         if (callback != null) {
-                            callback.onSuccess(listContactData);
+                            callback.onSuccess(model);
                         }
                     } else {
                         if (callback != null) {
@@ -93,10 +118,25 @@ public class ContactApi extends BaseApi<Void, Callback<List<ContactData>>> {
                         contactData.setLastUpdated(contactCursor.getLong(contactCursor.getColumnIndex(TableContact.FIELD_LAST_UPDATED_TIMESTAMP)));
                         contactData.setSynchronizedStatus(contactCursor.getInt(contactCursor.getColumnIndex(TableContact.FIELD_SYNCHRONIZED_STATUS)));
                         listContactData.add(contactData);
+                        try {
+                            JSONObject item = new JSONObject();
+                            item.put("contactName", contactData.getName());
+                            item.put("contactNumber",contactData.getNumber());
+                            jsonArray.put(item);
+                        } catch (JSONException ex) {
+                            ex.printStackTrace();
+                        }
                     }
                     contactCursor.close();
+                    model.setContactList(listContactData);
+                    try{
+                        jsonObject.put("contacts",jsonArray);
+                    } catch (JSONException ex) {
+                        ex.printStackTrace();
+                    }
+                    model.setHash(AppUtils.generateMd5(jsonObject.toString()));
                     if (callback != null) {
-                        callback.onSuccess(listContactData);
+                        callback.onSuccess(model);
                     }
                 }
             }
@@ -150,6 +190,11 @@ public class ContactApi extends BaseApi<Void, Callback<List<ContactData>>> {
         };
 
         new Thread(runnable).start();
+    }
+
+
+    public void generateContactHash(Callback<String> callback) {
+
     }
 
     public int getCountUnsynchronizedList() {

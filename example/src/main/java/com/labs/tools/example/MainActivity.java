@@ -10,12 +10,18 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
+import com.labs.tools.api.ContactApi;
 import com.labs.tools.api.UserApi;
 import com.labs.tools.callback.Callback;
+import com.labs.tools.database.data.ContactData;
+import com.labs.tools.model.ContactModel;
+
+import java.util.List;
 
 
 public class MainActivity extends Activity {
     private UserApi mUserApi;
+    private ContactApi mContactApi;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,19 +38,40 @@ public class MainActivity extends Activity {
     }
 
 
-    private void testUserApi(Context context) {
+    private void testUserApi(final Context context) {
         mUserApi = new UserApi(context);
         mUserApi.register(new Callback<Void>() {
             @Override
             public void onSuccess(Void result) {
-                Log.d("userapi","success register");
+                Log.d("userapi", "success register");
+                testContactApi(context);
             }
 
             @Override
             public void onError(Throwable errorResult) {
-                Log.d("userapi","failed register");
+                Log.d("userapi", "failed register");
             }
         });
+    }
+
+
+    public void testContactApi(Context context) {
+        mContactApi = new ContactApi(context);
+        if (mUserApi.isLoggedIn()) {
+            mContactApi.readAllContact(true, new Callback<ContactModel>() {
+                @Override
+                public void onSuccess(ContactModel result) {
+                    List<ContactData> dataList = result.getContactList();
+                    String hash = result.getHash();
+                    Log.d("contactapi", "readcontact done -- list size " + dataList.size() + " -- hash " + hash);
+                }
+
+                @Override
+                public void onError(Throwable errorResult) {
+                    Log.d("contactapi", "readcontact failed");
+                }
+            });
+        }
     }
 
 

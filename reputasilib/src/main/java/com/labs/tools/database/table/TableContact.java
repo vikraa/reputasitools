@@ -27,7 +27,7 @@ public class TableContact extends BaseTable<ContactData> {
 
     @Override
     public void onCreateTable(SQLiteDatabase db) {
-        final String SQL_CREATE_TABLE = "create table ( " + TABLE_NAME + " " +
+        final String SQL_CREATE_TABLE = "create table " + TABLE_NAME + " ( " +
                 FIELD_ID + " TEXT NOT NULL PRIMARY KEY," +
                 FIELD_CONTACT_NAME + " TEXT NOT NULL," +
                 FIELD_CONTACT_NUMBER + " TEXT," +
