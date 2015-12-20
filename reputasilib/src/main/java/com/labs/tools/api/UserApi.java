@@ -12,6 +12,7 @@ import com.labs.tools.net.RestConstant;
 import com.labs.tools.net.RetrofitHelper;
 import com.labs.tools.net.request.LoginRequest;
 import com.labs.tools.net.request.RegistrationRequest;
+import com.labs.tools.net.response.RestError;
 import com.labs.tools.throwable.NetworkException;
 import com.labs.tools.throwable.UserAlreadyRegisteredException;
 import com.labs.tools.throwable.UserDisclaimerException;
@@ -63,7 +64,8 @@ public class UserApi extends BaseApi<RegistrationRequest, Callback<RegistrationR
 
                 @Override
                 public void failure(RetrofitError error) {
-                    if (error.getResponse().getStatus() == RestConstant.RESPONSE_USER_ALREADY_REGISTERED) {
+                    RestError body = (RestError)error.getBodyAs(RestError.class);
+                    if (body.getCode() == RestConstant.RESPONSE_USER_ALREADY_REGISTERED) {
                         callback.onError(new UserAlreadyRegisteredException(error));
                     } else {
                         callback.onError(new UserRegisterException(mContext.getString(R.string.user_failed_to_register)));
