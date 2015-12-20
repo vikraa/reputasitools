@@ -15,8 +15,11 @@ import com.labs.tools.net.response.SearchResponse;
 
 import retrofit.Callback;
 import retrofit.http.Body;
+import retrofit.http.GET;
 import retrofit.http.Headers;
 import retrofit.http.POST;
+import retrofit.http.Path;
+import retrofit.http.Query;
 
 public interface RestService {
 
@@ -25,8 +28,8 @@ public interface RestService {
     void userRegister(@Body RegistrationRequest request, Callback<RegistrationResponse> callback);
 
     @Headers(RestConstant.HEADER_CONTENT_TYPE_JSON)
-    @POST(RestConstant.API_LOGIN)
-    void userLogin(@Body LoginRequest request, Callback<LoginResponse> callback);
+    @GET(RestConstant.API_LOGIN)
+    void userLogin(@Query("username") String username, @Query("password") String password, Callback<LoginResponse> callback);
 
     @Headers(RestConstant.HEADER_CONTENT_TYPE_JSON)
     @POST(RestConstant.API_GET_BLOCKED_NUMBER)

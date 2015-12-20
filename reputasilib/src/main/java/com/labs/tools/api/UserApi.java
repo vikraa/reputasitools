@@ -66,7 +66,8 @@ public class UserApi extends BaseApi<RegistrationRequest, Callback<RegistrationR
                 public void failure(RetrofitError error) {
                     RestError body = (RestError)error.getBodyAs(RestError.class);
                     if (body.getCode() == RestConstant.RESPONSE_USER_ALREADY_REGISTERED) {
-                        callback.onError(new UserAlreadyRegisteredException(error));
+                        login(callback);
+                        //callback.onError(new UserAlreadyRegisteredException(error));
                     } else {
                         callback.onError(new UserRegisterException(mContext.getString(R.string.user_failed_to_register)));
                     }
@@ -89,7 +90,7 @@ public class UserApi extends BaseApi<RegistrationRequest, Callback<RegistrationR
                     request.addHeader(RestConstant.HEADER_X_PARSE_APPLICATION_ID, RestConstant.APPLICATION_ID);
                     request.addHeader(RestConstant.HEADER_X_PARSE_REST_API_ID, RestConstant.REST_ID);
                 }
-            }, MyApplication.getLogLevel()).userLogin(loginRequest, new retrofit.Callback<LoginResponse>() {
+            }, MyApplication.getLogLevel()).userLogin(loginRequest.getUserName(), loginRequest.getPassword(), new retrofit.Callback<LoginResponse>() {
                 @Override
                 public void success(LoginResponse loginResponse, Response response) {
                     Preferences.getInstance(mContext).putSession(loginResponse.getSessionToken());
