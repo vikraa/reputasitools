@@ -9,6 +9,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.labs.tools.api.ContactApi;
 import com.labs.tools.api.UserApi;
@@ -34,7 +35,13 @@ public class MainActivity extends Activity {
                 testUserApi(ExampleApplication.getContext());
             }
         });
-
+        Button btn2 = (Button)findViewById(R.id.btn_check);
+        btn2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getApplicationContext(), "testing", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
 

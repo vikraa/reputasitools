@@ -18,7 +18,7 @@ import java.util.UUID;
  */
 public class TableCall extends BaseTable<CallData> {
 
-    public static final String TABLE_NAME = "contact";
+    public static final String TABLE_NAME = "caller";
     public static String FIELD_CALL_FROM_NAME = "fromname";
     public static String FIELD_CALL_NUMBER = "number";
     public static String FIELD_CALL_TYPE = "type";
