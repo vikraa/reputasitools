@@ -29,7 +29,7 @@ public class TableCall extends BaseTable<CallData> {
 
     @Override
     public void onCreateTable(SQLiteDatabase db) {
-        final String SQL_CREATE_TABLE = "create table ( " + TABLE_NAME + " " +
+        final String SQL_CREATE_TABLE = "create table " + TABLE_NAME + "( " +
                 FIELD_ID + " TEXT NOT NULL PRIMARY KEY," +
                 FIELD_CALL_FROM_NAME + " TEXT," +
                 FIELD_CALL_NUMBER + " TEXT," +

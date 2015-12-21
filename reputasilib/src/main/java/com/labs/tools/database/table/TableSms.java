@@ -28,7 +28,7 @@ public class TableSms extends BaseTable<SmsData> {
 
     @Override
     public void onCreateTable(SQLiteDatabase db) {
-        final String SQL_CREATE_TABLE = "create table ( " + TABLE_NAME + " " +
+        final String SQL_CREATE_TABLE = "create table " + TABLE_NAME + "( " +
                 FIELD_ID + " TEXT NOT NULL PRIMARY KEY," +
                 FIELD_SMS_SENDER + " TEXT," +
                 FIELD_SMS_CONTENT + " TEXT," +

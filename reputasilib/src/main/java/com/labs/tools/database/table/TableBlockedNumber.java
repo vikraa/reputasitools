@@ -24,7 +24,7 @@ public class TableBlockedNumber extends BaseTable<BlockedNumberData> {
 
     @Override
     public void onCreateTable(SQLiteDatabase db) {
-        String SQL_CREATE_TABLE = "create table ( " + TABLE_NAME +
+        String SQL_CREATE_TABLE = "create table " + TABLE_NAME + "( " +
                 FIELD_ID + " TEXT PRIMARY KEY NOT NULL," +
                 FIELD_BLOCKED_NAME + " TEXT," +
                 FIELD_BLOCKED_NUMBER + " TEXT," +

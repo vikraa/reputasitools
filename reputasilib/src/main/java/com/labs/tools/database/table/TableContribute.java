@@ -24,7 +24,7 @@ public class TableContribute extends BaseTable<ContributeData> {
 
     @Override
     public void onCreateTable(SQLiteDatabase db) {
-        final String SQL_CREATE_TABLE = "create table ( " + TABLE_NAME + " " +
+        final String SQL_CREATE_TABLE = "create table " + TABLE_NAME + "( " +
                 FIELD_ID + " TEXT NOT NULL PRIMARY KEY," +
                 FIELD_CONTRIBUTE_NAME + " TEXT," +
                 FIELD_CONTRIBUTE_NUMBER + " TEXT," +

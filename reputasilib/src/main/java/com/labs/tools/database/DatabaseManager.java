@@ -24,7 +24,7 @@ public class DatabaseManager extends SQLiteOpenHelper {
     public static final String NAME = "reputasi";
     private static final int VERSION = 2;
     private static DatabaseManager sDatabaseManager;
-
+    private SQLiteDatabase mDb;
     public static DatabaseManager getInstance(Context context) {
         if (sDatabaseManager == null) {
             sDatabaseManager = new DatabaseManager(context);
@@ -34,6 +34,9 @@ public class DatabaseManager extends SQLiteOpenHelper {
 
     public DatabaseManager(Context context) {
         super(context, NAME, null, VERSION);
+        if (mDb == null || !mDb.isOpen()) {
+            mDb = getWritableDatabase();
+        }
     }
 
     @Override

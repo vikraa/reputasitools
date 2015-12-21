@@ -7,6 +7,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 
+import com.labs.tools.MyApplication;
 import com.labs.tools.database.table.TableBlockedNumber;
 import com.labs.tools.database.table.TableCall;
 import com.labs.tools.database.table.TableContact;
@@ -35,7 +36,7 @@ public class DataProvider extends ContentProvider {
     public static final Uri BLOCKEDNUMBER_URI = Uri.withAppendedPath(CONTACT_URI, BASE_PATH + TableBlockedNumber.TABLE_NAME);
 
     private static final UriMatcher URI_MATCHER = new UriMatcher(UriMatcher.NO_MATCH);
-
+    private SQLiteDatabase mDb;
     static {
         URI_MATCHER.addURI(AUTHORITY, BASE_PATH + TableContact.TABLE_NAME, CONTACT);
         URI_MATCHER.addURI(AUTHORITY, BASE_PATH + TableCall.TABLE_NAME, CALL);
@@ -46,18 +47,18 @@ public class DataProvider extends ContentProvider {
 
     @Override
     public boolean onCreate() {
-        mDatabaseManager = DatabaseManager.getInstance(getContext());
+        mDatabaseManager = new DatabaseManager(getContext());
+        mDb = mDatabaseManager.getWritableDatabase();
         return true;
     }
 
     @Override
     public int delete(Uri uri, String selection, String[] selectionArgs) {
-        SQLiteDatabase db = mDatabaseManager.getWritableDatabase();
         int deletedRows;
         int uriType = URI_MATCHER.match(uri);
         switch (uriType) {
             case CONTACT:
-                deletedRows = db.delete(TableContact.TABLE_NAME, selection, selectionArgs);
+                deletedRows = mDb.delete(TableContact.TABLE_NAME, selection, selectionArgs);
                 break;
             default:
                 throw new IllegalArgumentException("Unknown URI: " + uri);

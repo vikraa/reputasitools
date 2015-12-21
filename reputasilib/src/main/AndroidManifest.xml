@@ -19,9 +19,10 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
 
     <application>
+
         <provider
-            android:authorities="com.labs.tools"
             android:name="com.labs.tools.database.DataProvider"
+            android:authorities="com.labs.tools"
             android:exported="false"/>
 
         <receiver android:name=".receiver.CallerReceiver"
