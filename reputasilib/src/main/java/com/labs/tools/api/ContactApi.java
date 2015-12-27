@@ -32,6 +32,7 @@ import java.util.List;
 import java.util.UUID;
 
 import retrofit.RequestInterceptor;
+import retrofit.RestAdapter;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
@@ -222,7 +223,7 @@ public class ContactApi extends BaseApi<Void, Callback<List<ContactData>>> {
                 request.addHeader(RestConstant.HEADER_X_PARSE_REST_API_ID, RestConstant.REST_ID);
                 request.addHeader(RestConstant.HEADER_X_PARSE_SESSIONTOKEN, Preferences.getInstance(mContext).getSessionToken());
             }
-        },MyApplication.getLogLevel()).checkContactHash(jsonObject.toString(), new retrofit.Callback<ContactHashResponse>() {
+        }, RestAdapter.LogLevel.FULL).checkContactHash(jsonObject.toString(), new retrofit.Callback<ContactHashResponse>() {
             @Override
             public void success(ContactHashResponse contactHashResponse, Response response) {
                 if (callback != null) {

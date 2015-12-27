@@ -13,6 +13,7 @@ import com.labs.tools.api.UserApi;
 import com.labs.tools.callback.Callback;
 import com.labs.tools.database.data.ContactData;
 import com.labs.tools.model.ContactModel;
+import com.labs.tools.model.ContactSyncResultModel;
 
 import java.util.List;
 
@@ -59,7 +60,7 @@ public class MainActivity extends Activity {
     }
 
 
-    public void testContactApi(Context context) {
+    public void testContactApi(final Context context) {
         mContactApi = new ContactApi(context);
         if (mUserApi.isLoggedIn()) {
             mContactApi.readAllContact(true, new Callback<ContactModel>() {
@@ -67,6 +68,7 @@ public class MainActivity extends Activity {
                 public void onSuccess(ContactModel result) {
                     List<ContactData> dataList = result.getContactList();
                     String hash = result.getHash();
+                    testSyncContactApi(context);
                     Log.d("contactapi", "readcontact done -- list size " + dataList.size() + " -- hash " + hash);
                 }
 
@@ -78,7 +80,32 @@ public class MainActivity extends Activity {
         }
     }
 
+    public void testSyncContactApi(Context context) {
+        mContactApi.syncContactHash(new Callback<Boolean>() {
+            @Override
+            public void onSuccess(Boolean result) {
+                Log.d("contactapi", "synccontact hash - " + result);
+                if (result) {
+                    mContactApi.syncContact(new Callback<ContactSyncResultModel>() {
+                        @Override
+                        public void onSuccess(ContactSyncResultModel result) {
+                            Log.d("contactapi", "synccontact result ok");
+                        }
 
+                        @Override
+                        public void onError(Throwable errorResult) {
+                            Log.d("contactapi", "synccontact result failed");
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onError(Throwable errorResult) {
+                Log.d("contactapi", "synccontact hash failed");
+            }
+        });
+    }
 //    @Override
 //    public boolean onCreateOptionsMenu(Menu menu) {
 //        // Inflate the menu; this adds items to the action bar if it is present.
