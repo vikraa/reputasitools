@@ -7,4 +7,5 @@
     <string name="item_already_exists">Already exists</string>
     <string name="read_contact_empty">Contact is empty</string>
     <string name="user_failed_to_register">Registration failed</string>
+    <string name="contact_hashstring">hashString</string>
 </resources>

@@ -28,6 +28,7 @@ public class RestConstant {
     public static final String API_CONTRIBUTE_NUMBER = "/1/functions/contributeNumber";
     public static final String API_SEARCH_NUMBER = "/1/functions/searchNumber";
     public static final String API_SYNC_CONTACT = "/1/functions/sendUserContact";
+    public static final String API_CHECK_CONTACT_HASH = "/1/functions/checkContactHash";
 
     /* response status */
     public static final int RESPONSE_USER_ALREADY_REGISTERED = 202;

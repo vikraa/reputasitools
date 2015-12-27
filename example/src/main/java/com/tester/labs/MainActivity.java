@@ -1,12 +1,9 @@
-package com.labs.tools.example;
+package com.tester.labs;
 
 import android.app.Activity;
 import android.content.Context;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -32,7 +29,7 @@ public class MainActivity extends Activity {
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                testUserApi(ExampleApplication.getContext());
+                testUserApi(AppSample.getContext());
             }
         });
         Button btn2 = (Button)findViewById(R.id.btn_check);

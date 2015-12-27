@@ -29,7 +29,7 @@ public abstract class MyApplication extends Application {
     }
 
     public static RestAdapter.LogLevel getLogLevel() {
-        return mRetrofitLogEnabled ? RestAdapter.LogLevel.FULL : RestAdapter.LogLevel.NONE;
+        return true == mRetrofitLogEnabled ? RestAdapter.LogLevel.FULL : RestAdapter.LogLevel.NONE;
     }
 
 }

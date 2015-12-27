@@ -17,6 +17,8 @@ public class Preferences {
     private static final String PREF_SESSION_TOKEN = "sessiontoken";
     private static final String PREF_DISCLAIMER_AGREEMENT = "disclaimeragreement";
     private static final String PREF_SEARCH_HISTORIES = "histories_";
+    private static final String PREF_CONTACT_HASH = "contact_hashstring";
+
     private final int MAXIMUM_HISTORIES = 3;
 
     private Context mContext;
@@ -34,6 +36,15 @@ public class Preferences {
     public Preferences(Context context) {
         mContext = context.getApplicationContext();
         mSharedPreferences = mContext.getSharedPreferences(FILE_NAME, Context.MODE_PRIVATE);
+    }
+
+
+    public void putContactHash(String hash) {
+        mSharedPreferences.edit().putString(PREF_CONTACT_HASH, hash).commit();
+    }
+
+    public String getContactHash() {
+        return mSharedPreferences.getString(PREF_CONTACT_HASH, "");
     }
 
     public void putSession(String sessionToken) {

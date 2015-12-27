@@ -4,6 +4,7 @@ import com.labs.tools.net.request.ContactRequest;
 import com.labs.tools.net.request.ContributeRequest;
 import com.labs.tools.net.request.SearchRequest;
 import com.labs.tools.net.response.BlockedNumberResponse;
+import com.labs.tools.net.response.ContactHashResponse;
 import com.labs.tools.net.response.ContactResponse;
 import com.labs.tools.net.response.ContributeResponse;
 import com.labs.tools.net.response.LoginResponse;
@@ -54,5 +55,9 @@ public interface RestService {
     @Headers(RestConstant.HEADER_CONTENT_TYPE_JSON)
     @POST(RestConstant.API_SYNC_CONTACT)
     ContactResponse syncContact(@Body ContactRequest request);
+
+    @Headers(RestConstant.HEADER_CONTENT_TYPE_JSON)
+    @POST(RestConstant.API_CHECK_CONTACT_HASH)
+    void checkContactHash(@Body String hash, Callback<ContactHashResponse> callback);
 
 }

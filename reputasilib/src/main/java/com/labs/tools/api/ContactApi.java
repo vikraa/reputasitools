@@ -12,10 +12,13 @@ import com.labs.tools.database.DataProvider;
 import com.labs.tools.database.data.ContactData;
 import com.labs.tools.database.table.TableContact;
 import com.labs.tools.model.ContactModel;
+import com.labs.tools.model.ContactSyncResultModel;
 import com.labs.tools.net.RestConstant;
 import com.labs.tools.net.RetrofitHelper;
 import com.labs.tools.net.request.ContactRequest;
+import com.labs.tools.net.response.ContactHashResponse;
 import com.labs.tools.net.response.ContactResponse;
+import com.labs.tools.throwable.ContactHashException;
 import com.labs.tools.throwable.ContactReadException;
 import com.labs.tools.util.AppUtils;
 import com.labs.tools.util.TimeUtils;
@@ -30,6 +33,7 @@ import java.util.UUID;
 
 import retrofit.RequestInterceptor;
 import retrofit.RetrofitError;
+import retrofit.client.Response;
 
 /**
  * Created by vikraa on 12/13/2015.
@@ -98,6 +102,7 @@ public class ContactApi extends BaseApi<Void, Callback<List<ContactData>>> {
                             ex.printStackTrace();
                         }
                         model.setHash(AppUtils.generateMd5(jsonObject.toString()));
+                        Preferences.getInstance(mContext).putContactHash(model.getHash());
 
                         if (callback != null) {
                             callback.onSuccess(model);
@@ -135,6 +140,8 @@ public class ContactApi extends BaseApi<Void, Callback<List<ContactData>>> {
                         ex.printStackTrace();
                     }
                     model.setHash(AppUtils.generateMd5(jsonObject.toString()));
+                    Preferences.getInstance(mContext).putContactHash(model.getHash());
+
                     if (callback != null) {
                         callback.onSuccess(model);
                     }
@@ -146,12 +153,14 @@ public class ContactApi extends BaseApi<Void, Callback<List<ContactData>>> {
 
     }
 
-    public void syncContact(final Callback<Integer> callback) {
+    public void syncContact(final Callback<ContactSyncResultModel> callback) {
         Runnable runnable = new Runnable() {
             @Override
             public void run() {
+                ContactSyncResultModel model = new ContactSyncResultModel();
                 Cursor cursor = mContentResolver.query(DataProvider.CONTACT_URI, null, TableContact.FIELD_SYNCHRONIZED_STATUS + " = ? ", new String[] { String.valueOf(TableContact.STATUS_SYNCHRONIZED_FAILED) }, null);
-                if (cursor.getCount() > 0) {
+                model.setContactCount(cursor.getCount());
+                if (model.getContactCount() > 0) {
                     TableContact tableContact = new TableContact();
                     while(cursor.moveToNext()) {
                         ContactData contactData = new ContactData();
@@ -172,20 +181,26 @@ public class ContactApi extends BaseApi<Void, Callback<List<ContactData>>> {
                             if (response != null) {
                                 contactData.setLastUpdated(TimeUtils.getCurrentTimestamp());
                                 contactData.setSynchronizedStatus(TableContact.STATUS_SYNCHRONIZED_SUCCESS);
+                                int successCount = model.getSuccessCount();
+                                model.setSuccessCount(successCount++);
                             }
                         } catch (RetrofitError err) {
                             contactData.setLastUpdated(TimeUtils.getCurrentTimestamp());
                             contactData.setSynchronizedStatus(TableContact.STATUS_SYNCHRONIZED_FAILED);
+                            int failedCount = model.getFailedCount();
+                            model.setFailedCount(failedCount++);
                         } catch (Exception ex) {
                             contactData.setLastUpdated(TimeUtils.getCurrentTimestamp());
                             contactData.setSynchronizedStatus(TableContact.STATUS_SYNCHRONIZED_FAILED);
+                            int failedCount = model.getFailedCount();
+                            model.setFailedCount(failedCount++);
                         } finally {
                             tableContact.update(contactData);
                         }
                     }
                 }
                 cursor.close();
-                callback.onSuccess(TableContact.STATUS_SYNCHRONIZED_TASK_FINISH);
+                callback.onSuccess(model);
             }
         };
 
@@ -193,8 +208,35 @@ public class ContactApi extends BaseApi<Void, Callback<List<ContactData>>> {
     }
 
 
-    public void generateContactHash(Callback<String> callback) {
+    public void syncContactHash(final Callback<Boolean> callback) {
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put(MyApplication.getContext().getString(R.string.contact_hashstring), Preferences.getInstance(mContext).getContactHash());
+        } catch (JSONException ex) {
+            ex.printStackTrace();
+        }
+        mRetrofit.createRestService(RestConstant.SERVER_END_POINT, RetrofitHelper.DEFAULT_CONNECTION_TIMEOUT, RetrofitHelper.DEFAULT_CONNECTION_TIMEOUT, new RequestInterceptor() {
+            @Override
+            public void intercept(RequestFacade request) {
+                request.addHeader(RestConstant.HEADER_X_PARSE_APPLICATION_ID, RestConstant.APPLICATION_ID);
+                request.addHeader(RestConstant.HEADER_X_PARSE_REST_API_ID, RestConstant.REST_ID);
+                request.addHeader(RestConstant.HEADER_X_PARSE_SESSIONTOKEN, Preferences.getInstance(mContext).getSessionToken());
+            }
+        },MyApplication.getLogLevel()).checkContactHash(jsonObject.toString(), new retrofit.Callback<ContactHashResponse>() {
+            @Override
+            public void success(ContactHashResponse contactHashResponse, Response response) {
+                if (callback != null) {
+                    callback.onSuccess(contactHashResponse.getResult().isContactNeedUpdate());
+                }
+            }
 
+            @Override
+            public void failure(RetrofitError error) {
+                if (callback != null) {
+                    callback.onError(new ContactHashException(error.getResponse().getReason()));
+                }
+            }
+        });
     }
 
     public int getCountUnsynchronizedList() {
