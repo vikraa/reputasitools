@@ -35,6 +35,7 @@ import retrofit.RequestInterceptor;
 import retrofit.RestAdapter;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
+import retrofit.mime.TypedString;
 
 /**
  * Created by vikraa on 12/13/2015.
@@ -223,7 +224,7 @@ public class ContactApi extends BaseApi<Void, Callback<List<ContactData>>> {
                 request.addHeader(RestConstant.HEADER_X_PARSE_REST_API_ID, RestConstant.REST_ID);
                 request.addHeader(RestConstant.HEADER_X_PARSE_SESSIONTOKEN, Preferences.getInstance(mContext).getSessionToken());
             }
-        }, RestAdapter.LogLevel.FULL).checkContactHash(jsonObject.toString(), new retrofit.Callback<ContactHashResponse>() {
+        }, RestAdapter.LogLevel.FULL).checkContactHash(new TypedString(jsonObject.toString()), new retrofit.Callback<ContactHashResponse>() {
             @Override
             public void success(ContactHashResponse contactHashResponse, Response response) {
                 if (callback != null) {

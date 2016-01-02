@@ -21,6 +21,7 @@ import retrofit.http.Headers;
 import retrofit.http.POST;
 import retrofit.http.Path;
 import retrofit.http.Query;
+import retrofit.mime.TypedInput;
 
 public interface RestService {
 
@@ -58,6 +59,6 @@ public interface RestService {
 
     @Headers(RestConstant.HEADER_CONTENT_TYPE_JSON)
     @POST(RestConstant.API_CHECK_CONTACT_HASH)
-    void checkContactHash(@Body String hash, Callback<ContactHashResponse> callback);
+    void checkContactHash(@Body TypedInput hash, Callback<ContactHashResponse> callback);
 
 }
