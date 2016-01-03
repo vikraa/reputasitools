@@ -4,6 +4,8 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
+import com.labs.tools.util.IntentUtils;
+
 /**
  * Created by Vikraa on 12/18/2015.
  */
@@ -12,11 +14,11 @@ public class AppReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         if (intent != null) {
-            if (intent.getAction().equalsIgnoreCase(ReceiverConstants.ACTION_APP_BOOT_COMPLETED)) {
+            if (intent.getAction().equalsIgnoreCase(IntentUtils.ACTION_APP_BOOT_COMPLETED)) {
 
-            } else if (intent.getAction().equalsIgnoreCase(ReceiverConstants.ACTION_APP_CONNECTIVITY_CHANGE)) {
+            } else if (intent.getAction().equalsIgnoreCase(IntentUtils.ACTION_APP_CONNECTIVITY_CHANGE)) {
 
-            } else if (intent.getAction().equalsIgnoreCase(ReceiverConstants.ACTION_APP_WIFI_STATE_CHANGED)) {
+            } else if (intent.getAction().equalsIgnoreCase(IntentUtils.ACTION_APP_WIFI_STATE_CHANGED)) {
 
             }
         }
