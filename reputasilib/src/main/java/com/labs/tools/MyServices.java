@@ -4,11 +4,13 @@ import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
 
+import com.labs.tools.api.CallerApi;
 import com.labs.tools.api.Preferences;
 import com.labs.tools.net.RestConstant;
 import com.labs.tools.net.RetrofitHelper;
 import com.labs.tools.net.request.SearchRequest;
 import com.labs.tools.net.response.SearchResponse;
+import com.labs.tools.util.AppConstants;
 import com.labs.tools.util.IntentUtils;
 
 import retrofit.Callback;
@@ -21,11 +23,8 @@ import retrofit.client.Response;
  */
 public class MyServices extends Service {
 
-    private RetrofitHelper mRetrofitHelper;
-
     @Override
     public void onCreate() {
-        mRetrofitHelper = new RetrofitHelper();
         super.onCreate();
     }
 
@@ -33,15 +32,16 @@ public class MyServices extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         if (intent != null) {
             if (intent.getAction().equalsIgnoreCase(IntentUtils.ACTION_REQUEST_NUMBER_RESOLVER)) {
-                handlerNumberResolver(intent);
+                CallerApi.getInstance(MyApplication.getContext()).resolveNumber(intent.getExtras().getString(AppConstants.KEY_INCOMING_NUMBER));
             }
         }
-        return START_STICKY; //super.onStartCommand(intent, flags, startId);
+        return Service.START_STICKY;
+        //super.onStartCommand(intent, flags, startId);
     }
 
-    private void handlerNumberResolver(Intent intent) {
+/*    private void handlerNumberResolver(Intent intent) {
         SearchRequest request = new SearchRequest();
-        request.setNumber(intent.getExtras().getString(IntentUtils.KEY_INCOMING_NUMBER));
+        request.setNumber(intent.getExtras().getString(AppConstants.KEY_INCOMING_NUMBER));
 
         mRetrofitHelper.createRestService(RestConstant.SERVER_END_POINT, RetrofitHelper.DEFAULT_CONNECTION_TIMEOUT, RetrofitHelper.DEFAULT_CONNECTION_TIMEOUT, new RequestInterceptor() {
             @Override
@@ -61,7 +61,7 @@ public class MyServices extends Service {
 
             }
         });
-    }
+    }*/
 
     @Override
     public IBinder onBind(Intent intent) {

@@ -8,6 +8,7 @@ import android.telephony.TelephonyManager;
 
 import com.labs.tools.api.CallerApi;
 import com.labs.tools.callback.CallerCallback;
+import com.labs.tools.util.AppConstants;
 import com.labs.tools.util.IntentUtils;
 
 /**
@@ -26,7 +27,7 @@ public class CallerReceiver extends BroadcastReceiver {
         try {
             TelephonyManager tmgr = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
             CallerState callerState = new CallerState(context);
-            tmgr.listen(callerState,PhoneStateListener.LISTEN_CALL_STATE);
+            tmgr.listen(callerState, PhoneStateListener.LISTEN_CALL_STATE);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -43,9 +44,9 @@ public class CallerReceiver extends BroadcastReceiver {
             mCallerListener = mCallerApi.getListener();
         }
 
-        private void requestNumberResolving(String number) {
+        private void requestNumberResolver(String number) {
             Intent serviceIntent = new Intent(IntentUtils.ACTION_REQUEST_NUMBER_RESOLVER);
-            serviceIntent.putExtra(IntentUtils.KEY_INCOMING_NUMBER, number);
+            serviceIntent.putExtra(AppConstants.KEY_INCOMING_NUMBER, number);
             mContext.startService(serviceIntent);
         }
 
@@ -53,18 +54,18 @@ public class CallerReceiver extends BroadcastReceiver {
         public void onCallStateChanged(int state, String incomingNumber) {
             super.onCallStateChanged(state, incomingNumber);
             switch (state) {
-                case IntentUtils.STATE_CALLER_IDLE:
+                case AppConstants.STATE_CALLER_IDLE:
                     if (mCallerListener != null) {
                         mCallerListener.onCallFinished();
                     }
                     break;
-                case IntentUtils.STATE_CALLER_RINGING:
-
+                case AppConstants.STATE_CALLER_RINGING:
+                    requestNumberResolver(incomingNumber);
                     if (mCallerListener != null) {
                         mCallerListener.onCallRinging(incomingNumber);
                     }
                     break;
-                case IntentUtils.STATE_CALLER_OFFHOOK:
+                case AppConstants.STATE_CALLER_OFFHOOK:
                     if (mCallerListener != null) {
                         mCallerListener.onCallPickup();
                     }

@@ -8,9 +8,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.labs.tools.api.CallerApi;
 import com.labs.tools.api.ContactApi;
 import com.labs.tools.api.UserApi;
 import com.labs.tools.callback.Callback;
+import com.labs.tools.callback.CallerCallback;
 import com.labs.tools.database.data.ContactData;
 import com.labs.tools.model.ContactModel;
 import com.labs.tools.model.ContactSyncResultModel;
@@ -42,6 +44,35 @@ public class MainActivity extends Activity {
         });
     }
 
+
+    private void testRegisterIncomingCall(final Context context) {
+        CallerApi.getInstance(context).setListener(new CallerCallback() {
+            @Override
+            public void onNumberResult(String name, String number, int scoreUp, int scoreDown, int currentScore) {
+
+            }
+
+            @Override
+            public void onCallRinging(String number) {
+
+            }
+
+            @Override
+            public void onCallPickup() {
+
+            }
+
+            @Override
+            public void onCallRejected(String number) {
+
+            }
+
+            @Override
+            public void onCallFinished() {
+
+            }
+        });
+    }
 
     private void testUserApi(final Context context) {
         mUserApi = new UserApi(context);

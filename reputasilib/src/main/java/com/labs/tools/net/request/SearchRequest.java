@@ -8,6 +8,10 @@ import com.google.gson.annotations.SerializedName;
 public class SearchRequest extends BaseRequest {
     @SerializedName("incomingNumber")
     private String mNumber;
+    @SerializedName("callType")
+    private int mSearchType;
+    @SerializedName("connectionType")
+    private String mConnectionType;
 
     public SearchRequest() {
     }
@@ -18,5 +22,13 @@ public class SearchRequest extends BaseRequest {
 
     public void setNumber(String number) {
         this.mNumber = number;
+    }
+
+    public void setSearchType(int searchType) {
+        this.mSearchType = searchType;
+    }
+
+    public void setConnectionType(String connectionType) {
+        this.mConnectionType = connectionType;
     }
 }

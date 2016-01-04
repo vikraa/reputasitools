@@ -19,14 +19,4 @@ public class IntentUtils {
     /* action services */
     public static final String ACTION_REQUEST_NUMBER_RESOLVER = "reputasi.request.number.resolver";
 
-
-    /* caller state */
-    public static final int STATE_CALLER_RINGING = 1;
-    public static final int STATE_CALLER_OFFHOOK = 2;
-    public static final int STATE_CALLER_IDLE = 0;
-
-    /* caller data key */
-    public static final String KEY_INCOMING_NUMBER = "incoming_number";
-
-
 }
