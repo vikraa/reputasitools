@@ -11,6 +11,7 @@ import com.labs.tools.net.RetrofitHelper;
 import com.labs.tools.net.request.SearchRequest;
 import com.labs.tools.net.response.SearchResponse;
 import com.labs.tools.throwable.SearchNumberException;
+import com.labs.tools.util.AppConstants;
 import com.labs.tools.util.NetworkUtils;
 
 import retrofit.RequestInterceptor;
@@ -32,6 +33,8 @@ public class SearchNumberApi extends BaseApi<Void, Callback<Void>> {
     public void search(String number, final Callback<ContactData> callback) {
         if (NetworkUtils.isNetworkConnected(mContext)) {
             SearchRequest request = new SearchRequest(number);
+            request.setSearchType(AppConstants.SEARCH_TYPE_USER_REQUEST_NUMBER);
+            request.setConnectionType(NetworkUtils.getNetworkConnectionType(mContext));
             mRetrofit.createRestService(RestConstant.SERVER_END_POINT, RetrofitHelper.DEFAULT_CONNECTION_TIMEOUT, RetrofitHelper.DEFAULT_CONNECTION_TIMEOUT, new RequestInterceptor() {
                 @Override
                 public void intercept(RequestFacade request) {

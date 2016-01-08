@@ -1,6 +1,9 @@
 package com.labs.tools.api;
 
 import android.content.Context;
+import android.database.Cursor;
+import android.net.Uri;
+import android.provider.ContactsContract;
 
 import com.labs.tools.MyApplication;
 import com.labs.tools.callback.Callback;
@@ -14,6 +17,7 @@ import com.labs.tools.util.AppConstants;
 import com.labs.tools.util.NetworkUtils;
 
 import retrofit.RequestInterceptor;
+import retrofit.RestAdapter;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
@@ -36,6 +40,7 @@ public class CallerApi extends BaseApi<Void, Callback<Void>> {
     }
 
     private CallerApi(Context context) {
+        mRetrofitHelper = new RetrofitHelper();
         this.mContext = context;
     }
 
@@ -48,10 +53,16 @@ public class CallerApi extends BaseApi<Void, Callback<Void>> {
     }
 
     public void resolveNumber(final String number) {
+        resolveNumber(number, mListener);
+    }
+
+    public void resolveNumber(final String number, final CallerCallback callback) {
         SearchRequest request = new SearchRequest();
         request.setNumber(number);
         request.setConnectionType(NetworkUtils.getNetworkConnectionType(mContext));
         request.setSearchType(AppConstants.SEARCH_TYPE_INCOMING_CALL_NUMBER);
+        /* first search from phonebook while later send request to parse api */
+        resolvePhonebookNumber(number, callback);
         mRetrofitHelper.createRestService(RestConstant.SERVER_END_POINT, RetrofitHelper.DEFAULT_CONNECTION_TIMEOUT, RetrofitHelper.DEFAULT_CONNECTION_TIMEOUT, new RequestInterceptor() {
             @Override
             public void intercept(RequestFacade request) {
@@ -63,18 +74,34 @@ public class CallerApi extends BaseApi<Void, Callback<Void>> {
             @Override
             public void success(SearchResponse searchResponse, Response response) {
                 SearchNumberItem item = searchResponse.getResult();
-                if (mListener != null) {
-                    mListener.onNumberResult(item.getOwnerName(), item.getPhoneNumber(),
+                if (callback != null) {
+                    callback.onNumberResult(item.getOwnerName(), item.getPhoneNumber(),
                             item.getThumbUpScore(), item.getThumbDownScore(), item.getScore());
                 }
             }
 
             @Override
             public void failure(RetrofitError error) {
-                if (mListener != null) {
-                    mListener.onNumberResult(number, number, 0, 0, DEFAULT_SCORE);
+                if (callback != null) {
+                    callback.onNumberResult(number, number, 0, 0, DEFAULT_SCORE);
                 }
             }
         });
+    }
+
+    private void resolvePhonebookNumber(String number, CallerCallback callback) {
+        Uri uri = Uri.withAppendedPath(ContactsContract.PhoneLookup.CONTENT_FILTER_URI, Uri.encode(number));
+        String[] projection = new String[] {ContactsContract.PhoneLookup.DISPLAY_NAME };
+        Cursor cursor = mContext.getContentResolver().query(uri, projection, null, null, null);
+        if (cursor.moveToFirst()) {
+            String name = cursor.getString(cursor.getColumnIndex(ContactsContract.PhoneLookup.DISPLAY_NAME));
+            if (callback != null) {
+                callback.onNumberResult(name, number, 0, 0, DEFAULT_SCORE);
+            }
+        } else {
+            if (callback != null ) {
+                callback.onNumberResult(number, number, 0, 0, DEFAULT_SCORE);
+            }
+        }
     }
 }

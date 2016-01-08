@@ -56,7 +56,7 @@ public class MainActivity extends Activity {
         CallerApi.getInstance(context).setListener(new CallerCallback() {
             @Override
             public void onNumberResult(String name, String number, int scoreUp, int scoreDown, int currentScore) {
-
+                Log.d("numberresult", name + " " + number + " " + scoreUp + " " + scoreDown + " " + currentScore);
             }
 
             @Override
@@ -76,7 +76,7 @@ public class MainActivity extends Activity {
 
             @Override
             public void onCallFinished(String number) {
-
+                CallerApi.getInstance(context).resolveNumber("+6281280988090");
             }
         });
     }
