@@ -8,5 +8,5 @@ public interface CallerCallback {
     void onCallRinging(String number);
     void onCallPickup();
     void onCallRejected(String number);
-    void onCallFinished();
+    void onCallFinished(String number);
 }

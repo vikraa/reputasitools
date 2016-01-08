@@ -56,7 +56,7 @@ public class CallerReceiver extends BroadcastReceiver {
             switch (state) {
                 case AppConstants.STATE_CALLER_IDLE:
                     if (mCallerListener != null) {
-                        mCallerListener.onCallFinished();
+                        mCallerListener.onCallFinished(incomingNumber);
                     }
                     break;
                 case AppConstants.STATE_CALLER_RINGING:

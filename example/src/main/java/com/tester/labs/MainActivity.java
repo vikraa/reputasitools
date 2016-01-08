@@ -2,6 +2,7 @@ package com.tester.labs;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -16,6 +17,7 @@ import com.labs.tools.callback.CallerCallback;
 import com.labs.tools.database.data.ContactData;
 import com.labs.tools.model.ContactModel;
 import com.labs.tools.model.ContactSyncResultModel;
+import com.labs.tools.util.IntentUtils;
 
 import java.util.List;
 
@@ -39,9 +41,14 @@ public class MainActivity extends Activity {
         btn2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                /* please remove dummy action after testing is completed */
+                Intent intent = new Intent(IntentUtils.ACTION_REPUTASI_DUMMY);
+                sendBroadcast(intent);
                 Toast.makeText(getApplicationContext(), "testing", Toast.LENGTH_SHORT).show();
             }
         });
+
+        testRegisterIncomingCall(this);
     }
 
 
@@ -68,7 +75,7 @@ public class MainActivity extends Activity {
             }
 
             @Override
-            public void onCallFinished() {
+            public void onCallFinished(String number) {
 
             }
         });

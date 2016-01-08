@@ -18,5 +18,6 @@ public class IntentUtils {
 
     /* action services */
     public static final String ACTION_REQUEST_NUMBER_RESOLVER = "reputasi.request.number.resolver";
+    public static final String ACTION_REPUTASI_DUMMY = "reputasi.dummy.action";
 
 }
