@@ -1,5 +1,7 @@
 package com.labs.tools.api;
 
+import android.os.AsyncTask;
+
 import com.labs.tools.callback.Callback;
 
 /**
@@ -7,7 +9,13 @@ import com.labs.tools.callback.Callback;
  */
 public abstract class BaseApi<T, E extends Callback> {
 
-    public void getDataAsync(E callback) {
+    protected void getDataAsync(E callback) {
+       Runnable runnable = new Runnable() {
+           @Override
+           public void run() {
 
+           }
+       };
+        new Thread(runnable).start();
     }
 }

@@ -35,12 +35,7 @@ public class ContributeApi extends BaseApi<Void, Callback<Void>> {
         mRetrofit = new RetrofitHelper();
     }
 
-    @Override
-    public void getDataAsync(Callback<Void> callback) {
-
-    }
-
-    public void addContribute(String name, String number, String notes, String categoryId, final Callback<Void> callback) {
+      public void addContribute(String name, String number, String notes, String categoryId, final Callback<Void> callback) {
         final TableContribute tableContribute = new TableContribute();
         ContributeData data = tableContribute.find(new String[]{TableContribute.FIELD_CONTRIBUTE_NUMBER}, number);
 
