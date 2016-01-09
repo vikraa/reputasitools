@@ -60,9 +60,13 @@ public class CallerReceiver extends BroadcastReceiver {
                     }
                     break;
                 case AppConstants.STATE_CALLER_RINGING:
-                    requestNumberResolver(incomingNumber);
-                    if (mCallerListener != null) {
-                        mCallerListener.onCallRinging(incomingNumber);
+                    if (!mCallerApi.rejectCall(incomingNumber)) {
+                        requestNumberResolver(incomingNumber);
+                        if (mCallerListener != null) {
+                            mCallerListener.onCallRinging(incomingNumber);
+                        }
+                    } else {
+                        mCallerListener.onCallRejected(incomingNumber);
                     }
                     break;
                 case AppConstants.STATE_CALLER_OFFHOOK:

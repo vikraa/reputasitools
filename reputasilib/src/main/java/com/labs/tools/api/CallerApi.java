@@ -4,10 +4,15 @@ import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.ContactsContract;
+import android.telephony.TelephonyManager;
 
+import com.android.internal.telephony.ITelephony;
 import com.labs.tools.MyApplication;
 import com.labs.tools.callback.Callback;
 import com.labs.tools.callback.CallerCallback;
+import com.labs.tools.database.DataProvider;
+import com.labs.tools.database.data.BlockedNumberData;
+import com.labs.tools.database.table.TableBlockedNumber;
 import com.labs.tools.net.RestConstant;
 import com.labs.tools.net.RetrofitHelper;
 import com.labs.tools.net.request.SearchRequest;
@@ -15,6 +20,8 @@ import com.labs.tools.net.response.SearchResponse;
 import com.labs.tools.net.response.item.SearchNumberItem;
 import com.labs.tools.util.AppConstants;
 import com.labs.tools.util.NetworkUtils;
+
+import java.lang.reflect.Method;
 
 import retrofit.RequestInterceptor;
 import retrofit.RestAdapter;
@@ -28,6 +35,7 @@ public class CallerApi extends BaseApi<Void, Callback<Void>> {
 
     private Context mContext;
     private CallerCallback mListener;
+    private TableBlockedNumber mBlockedNumberTable;
     private RetrofitHelper mRetrofitHelper;
     private static CallerApi sInstance;
     private static final int DEFAULT_SCORE = 60;
@@ -41,7 +49,9 @@ public class CallerApi extends BaseApi<Void, Callback<Void>> {
 
     private CallerApi(Context context) {
         mRetrofitHelper = new RetrofitHelper();
+        mBlockedNumberTable = new TableBlockedNumber();
         this.mContext = context;
+
     }
 
     public void setListener(CallerCallback listener) {
@@ -103,5 +113,28 @@ public class CallerApi extends BaseApi<Void, Callback<Void>> {
                 callback.onNumberResult(number, number, 0, 0, DEFAULT_SCORE);
             }
         }
+        cursor.close();
+    }
+
+    public boolean rejectCall(String number) {
+        Cursor qCursor = mContext.getContentResolver().query(DataProvider.BLOCKEDNUMBER_URI, null, TableBlockedNumber.FIELD_BLOCKED_NUMBER + " = ?", new String[] { number }, null);
+        if (qCursor != null) {
+            if (qCursor.getCount() > 0) {
+                //reject call
+
+                TelephonyManager tm = (TelephonyManager) mContext.getSystemService(mContext.TELEPHONY_SERVICE);
+                try {
+                    Class c = Class.forName(tm.getClass().getName());
+                    Method m = c.getDeclaredMethod("getITelephony");
+                    m.setAccessible(true);
+                    ITelephony telephonyService = (ITelephony)m.invoke(tm);
+                    telephonyService.endCall();
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+                return true;
+            }
+        }
+        return false;
     }
 }
