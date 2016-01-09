@@ -11,8 +11,16 @@ import com.labs.tools.net.RetrofitHelper;
 public class SmsApi extends BaseApi<Void, Callback<Void>> {
     private Context mContext;
     private RetrofitHelper mRetrofit;
+    private static SmsApi sInstance;
 
-    public SmsApi(Context context) {
+    public static SmsApi getInstance(Context context) {
+        if (sInstance == null) {
+            sInstance = new SmsApi(context);
+        }
+        return sInstance;
+    }
+
+    private SmsApi(Context context) {
         this.mContext = context;
         mRetrofit = new RetrofitHelper();
     }
