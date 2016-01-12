@@ -44,7 +44,7 @@ public class UserApi extends BaseApi<RegistrationRequest, Callback<RegistrationR
             String imei = DeviceUtils.getImei(mContext);
             registrationRequest.setUserName(imei);
             registrationRequest.setPassword(AppUtils.generateMd5(imei));
-            registrationRequest.setDeviceInfo(DeviceUtils.getDeviceInfo());
+            registrationRequest.setDeviceInfo(DeviceUtils.getDeviceInfo(mContext));
             registrationRequest.setAuthData(null);
             registrationRequest.setGender("");
             registrationRequest.setDisplayName(imei);
@@ -74,7 +74,7 @@ public class UserApi extends BaseApi<RegistrationRequest, Callback<RegistrationR
                 }
             });
         } else {
-            callback.onError(new NetworkException(MyApplication.getContext().getString(R.string.no_network_connection)));
+            callback.onError(new NetworkException(mContext.getString(R.string.no_network_connection)));
         }
     }
 
@@ -103,7 +103,7 @@ public class UserApi extends BaseApi<RegistrationRequest, Callback<RegistrationR
                 }
             });
         } else {
-            callback.onError(new NetworkException(MyApplication.getContext().getString(R.string.no_network_connection)));
+            callback.onError(new NetworkException(mContext.getString(R.string.no_network_connection)));
         }
     }
 

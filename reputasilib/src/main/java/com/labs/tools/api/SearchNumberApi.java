@@ -59,7 +59,7 @@ public class SearchNumberApi extends BaseApi<Void, Callback<Void>> {
                 }
             });
         } else {
-            callback.onError(new SearchNumberException(MyApplication.getContext().getString(R.string.no_network_connection)));
+            callback.onError(new SearchNumberException(mContext.getString(R.string.no_network_connection)));
         }
     }
 

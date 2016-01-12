@@ -85,7 +85,7 @@ public class BlockedNumberApi extends BaseApi<BlockedNumberRequest, Callback> {
                 }
             });
         } else {
-            callback.onError(new NetworkException(MyApplication.getContext().getString(R.string.no_network_connection)));
+            callback.onError(new NetworkException(mContext.getString(R.string.no_network_connection)));
         }
     }
 
@@ -138,7 +138,7 @@ public class BlockedNumberApi extends BaseApi<BlockedNumberRequest, Callback> {
                 }
             });
         } else {
-            callback.onError(new NetworkException(MyApplication.getContext().getString(R.string.no_network_connection)));
+            callback.onError(new NetworkException(mContext.getString(R.string.no_network_connection)));
         }
 
     }
@@ -174,7 +174,7 @@ public class BlockedNumberApi extends BaseApi<BlockedNumberRequest, Callback> {
                 }
             });
         } else {
-            callback.onError(new NetworkException(MyApplication.getContext().getString(R.string.no_network_connection)));
+            callback.onError(new NetworkException(mContext.getString(R.string.no_network_connection)));
         }
 
     }

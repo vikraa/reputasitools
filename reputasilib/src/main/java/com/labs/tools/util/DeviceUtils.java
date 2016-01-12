@@ -155,12 +155,12 @@ public class DeviceUtils {
 
     }
 
-    public static String getDeviceInfo() {
+    public static String getDeviceInfo(Context context) {
         String phoneInfo = "";
         String osVersion = Build.VERSION.RELEASE;
         String deviceManufactur = Build.MANUFACTURER;
         String deviceModel = Build.MODEL;
-        TelephonyManager tmgr = (TelephonyManager)MyApplication.getContext().getSystemService(Context.TELEPHONY_SERVICE);
+        TelephonyManager tmgr = (TelephonyManager)context.getSystemService(Context.TELEPHONY_SERVICE);
         String deviceImei = tmgr.getDeviceId();
         String simICCID = tmgr.getSimSerialNumber();
         String simISDN = tmgr.getLine1Number() == null ? "" : tmgr.getLine1Number();

@@ -32,7 +32,7 @@ public class MyServices extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         if (intent != null) {
             if (intent.getAction().equalsIgnoreCase(IntentUtils.ACTION_REQUEST_NUMBER_RESOLVER)) {
-                CallerApi.getInstance(MyApplication.getContext()).resolveNumber(intent.getExtras().getString(AppConstants.KEY_INCOMING_NUMBER));
+                CallerApi.getInstance(this).resolveNumber(intent.getExtras().getString(AppConstants.KEY_INCOMING_NUMBER));
             }
         }
         return Service.START_STICKY;

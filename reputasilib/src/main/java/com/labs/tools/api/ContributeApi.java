@@ -83,12 +83,12 @@ public class ContributeApi extends BaseApi<Void, Callback<Void>> {
                 });
             } else {
                 if (callback != null) {
-                    callback.onError(new ContributeException(MyApplication.getContext().getString(R.string.no_network_connection)));
+                    callback.onError(new ContributeException(mContext.getString(R.string.no_network_connection)));
                 }
             }
         } else {
             if (callback != null) {
-                callback.onError(new ContributeExistException(MyApplication.getContext().getString(R.string.item_already_exists)));
+                callback.onError(new ContributeExistException(mContext.getString(R.string.item_already_exists)));
             }
         }
     }

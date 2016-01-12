@@ -48,7 +48,7 @@ public class ContactApi extends BaseApi<Void, Callback<List<ContactData>>> {
     public ContactApi(Context context) {
         this.mContext = context;
         mRetrofit = new RetrofitHelper();
-        mContentResolver = MyApplication.getContext().getContentResolver();
+        mContentResolver = mContext.getContentResolver();
     }
 
 
@@ -111,7 +111,7 @@ public class ContactApi extends BaseApi<Void, Callback<List<ContactData>>> {
                         }
                     } else {
                         if (callback != null) {
-                            callback.onError(new ContactReadException(MyApplication.getContext().getString(R.string.read_contact_empty)));
+                            callback.onError(new ContactReadException(mContext.getString(R.string.read_contact_empty)));
                         }
                     }
                 } else {
@@ -213,7 +213,7 @@ public class ContactApi extends BaseApi<Void, Callback<List<ContactData>>> {
     public void syncContactHash(final Callback<Boolean> callback) {
         JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put(MyApplication.getContext().getString(R.string.contact_hashstring), Preferences.getInstance(mContext).getContactHash());
+            jsonObject.put(mContext.getString(R.string.contact_hashstring), Preferences.getInstance(mContext).getContactHash());
         } catch (JSONException ex) {
             ex.printStackTrace();
         }
