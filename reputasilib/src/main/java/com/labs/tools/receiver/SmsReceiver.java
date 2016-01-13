@@ -29,4 +29,13 @@ public class SmsReceiver extends BroadcastReceiver {
         String sender = currentMessage.getDisplayOriginatingAddress();
         String message = currentMessage.getDisplayMessageBody();
     }
+
+    public void addBlockedSender(String sender) {
+
+    }
+
+    public void removeBlockedSender(String sender) {
+
+    }
+
 }

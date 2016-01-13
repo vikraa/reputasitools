@@ -1,10 +1,12 @@
 package com.labs.tools.api;
 
 import android.content.Context;
+import android.database.Cursor;
 
 import com.labs.tools.MyApplication;
 import com.labs.tools.R;
 import com.labs.tools.callback.Callback;
+import com.labs.tools.database.DataProvider;
 import com.labs.tools.database.data.ContributeData;
 import com.labs.tools.database.table.TableContribute;
 import com.labs.tools.net.RestConstant;
@@ -35,7 +37,7 @@ public class ContributeApi extends BaseApi<Void, Callback<Void>> {
         mRetrofit = new RetrofitHelper();
     }
 
-      public void addContribute(String name, String number, String notes, String categoryId, final Callback<Void> callback) {
+    public void addContribute(String name, String number, String notes, String categoryId, final Callback<Void> callback) {
         final TableContribute tableContribute = new TableContribute();
         ContributeData data = tableContribute.find(new String[]{TableContribute.FIELD_CONTRIBUTE_NUMBER}, number);
 
@@ -91,5 +93,17 @@ public class ContributeApi extends BaseApi<Void, Callback<Void>> {
                 callback.onError(new ContributeExistException(mContext.getString(R.string.item_already_exists)));
             }
         }
+    }
+
+    public boolean isNumberContributed(String number) {
+        Cursor cursor = mContext.getContentResolver().query(DataProvider.CONTRIBUTE_URI, null, TableContribute.FIELD_CONTRIBUTE_NUMBER + " = ? ", new String[] { number }, null);
+        boolean result = false;
+        if (cursor != null) {
+            if (cursor.getCount() > 0) {
+                result = true;
+            }
+            cursor.close();
+        }
+        return result;
     }
 }
